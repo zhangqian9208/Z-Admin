@@ -22,11 +22,10 @@ SpringBoot后台管理系统模板，前后端不分离的轻量级后台管理�
 #### 环境及插件要求
 
 - 环境及插件
-
-- Jdk8+
-- Mysql5.5+
-- Maven
-- Lombok（重要）
+  - Jdk8+
+  - Mysql5.5+
+  - Maven
+  - Lombok（重要）
 
 
 
