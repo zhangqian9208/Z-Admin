@@ -1,9 +1,11 @@
-# Z-boot后台管理轻量级项目模板V0.1
+# Z-Admin后台管理轻量级项目模板V0.1
 
+#### 交流QQ群
+QQ群：867492532
 
 #### 项目介绍
 SpringBoot后台管理系统模板，前后端不分离的轻量级后台管理系统模板，包含用户管理、部门管理、模块管理、角色管理、异常日志捕获功能，前台页面权限可以控制到按钮，页面菜单可以收起，包含tabs页面。
-欢迎大家交流、学习、使用。
+主要适合小公司、小团队、个人等使用，一个后端人员，就可以进行二次开发。
 
 #### 技术选型
 - 后端技术：SpringBoot + mybatisPlus
@@ -34,30 +36,26 @@ SpringBoot后台管理系统模板，前后端不分离的轻量级后台管理�
 
 - 运行项目
   - 通过Java应用方式运行admin模块下的com.linln.admin.BootApplication文件
-  - 数据库配置：根据sql语句简历数据库，修改配置中的数据库连接地址即可
+  - 数据库配置：根据sql语句建立数据库，修改配置中的数据库连接地址即可
   - 访问地址：http://localhost:8080/backend/index_tabs.html
   - 默认帐号密码：zhangqian/123
 
 
 #### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+待完善
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+- 欢迎大家参与本项目贡献，可先加入QQ群进行沟通
 
 
-#### 特技
+#### 界面展示
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- 登录页面
+![输入图片说明](demo/img%E6%88%AA%E5%9B%BE20220508215358.png)
+- 部门管理
+![输入图片说明](demo/img%E6%88%AA%E5%9B%BE20220508215415.png)
+- 角色授权
+![输入图片说明](demo/img%E6%88%AA%E5%9B%BE20220508215438.png)
+- 用户授权
+![输入图片说明](demo/img%E6%88%AA%E5%9B%BE20220508215505.png)
