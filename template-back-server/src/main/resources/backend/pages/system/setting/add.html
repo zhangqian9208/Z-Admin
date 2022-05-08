@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 引入Element必要的依赖文件 -->
+  <link rel="stylesheet" href="../../../plugins/element-ui/lib/theme-chalk/index.css">
+  <script src="../../../plugins/vue/vue.js"></script>
+  <script src="../../../plugins/element-ui/lib/index.js"></script>
+  <script src="../../../plugins/axios/axios.min.js" type="text/javascript"></script>
+  <script src="../../../js/request.js"></script>
+  <script src="../../../api/setting.js"></script>
+  <script src="../../../js/validate.js"></script>
+  <script src="../../../js/index.js"></script>
+
+<body>
+  <!-- div关联Vue依赖 -->
+  <div id="div">
+    <!-- 新增数据表单start -->
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form-item label="序号" prop="sort">
+        <el-input v-model="ruleForm.sort"></el-input>
+      </el-form-item>
+      <el-form-item label="参数名称" prop="name">
+        <el-input v-model="ruleForm.name" maxlength="10"></el-input>
+      </el-form-item>
+      <el-form-item label="参数值" prop="param">
+        <el-input v-model="ruleForm.param"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="ruleForm.remark"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- 新增数据表单end -->
+  </div>
+</body>
+<!-- js代码部分 -->
+<script>
+  // Vue核心对象
+  new Vue({
+    el: "#div",
+    data() {
+      return {
+        //如果是修改，责标记当前id
+        id: '',
+        //标记当前状态为新增还是修改
+        actionType: '',
+        //表单提交的数据
+        ruleForm: {
+          'sort': '',
+          name: '',
+          param: '',
+          remark: ''
+        },
+        // 数据验证
+        rules: {
+          'sort': [
+            // 验证规则有先后顺序，验证数字将强制转型，无法再进行后面的长度验证，因此将长度验证放在前面
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' },
+            { required: true, 'validator': validNum, 'trigger': 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入参数名称', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          ],
+          param: [
+            { required: true, message: '请输入参数值', trigger: 'blur' },
+          ],
+        }
+      };
+    },
+    //钩子函数，创建页面时被初始化
+    created() {
+      //从请求路径中获取id数据
+      this.id = requestUrlParam('id')
+      //判断id是否存在，确定当前是新增还是修改的状态
+      this.actionType = this.id ? 'edit' : 'add'
+      //如果id存在，则执行初始化方法， 根据id查询数据
+      if (this.id) {
+        this.init()
+      }
+    },
+    mounted() {
+
+    },
+    methods: {
+      //初始化方法：根据id查询单条数据，进行修改时的数据回显
+      async init() {
+        querySettingById(this.id).then(res => {
+          console.log(res)
+          if (String(res.code) === '1') {
+            this.ruleForm = { ...res.data }
+          } else {
+            this.$message.error(res.msg || '操作失败')
+          }
+        })
+      },
+      //重置数据的方法
+      resetForm(ruleForm) {
+        this.ruleForm = {
+          sort: '',
+          name: '',
+          param: '',
+          remark: ''
+        }
+      },
+      // 提交数据的方法
+      submitForm(formName, st) {
+        //01.判断数据是否通过验证
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            //获取要提交的数据
+            let params = { ...this.ruleForm }
+            // params.flavors = this.dishFlavors
+            //如果是新增方法，则删除id数据
+            if (this.actionType == 'add') {
+              delete params.id
+              //调用方法，提交数据
+              addSetting(params).then(res => {
+                //根据返回值进行提示res.code === 1
+                if (res.code === 1) {
+                  parent.index.$message.success('参数添加成功！')
+                  if (!st) {
+                    //重置数据
+                    this.resetForm();
+                    //关闭窗口
+                    parent.index.dialogVisible = false
+                    //刷新数据
+                    parent.index.reloadIframe()
+                  } else {
+                    this.resetForm(ruleForm)
+                  }
+                } else {
+                  parent.index.$message.error(res.msg || '操作失败')
+                }
+              }).catch(err => {
+                parent.index.$message.error('请求出错了：' + err)
+              })
+            } else {
+              //如果是修改的方法，责需要携带id
+              delete params.updateTime
+              editSetting(params).then(res => {
+                if (res.code === 1) {
+                  parent.index.$message.success('修改成功！')
+                  //关闭窗口
+                  parent.index.dialogVisible = false
+                  //刷新数据
+                  parent.index.handleQuery()
+                } else {
+                  parent.index.$message.error(res.msg || '操作失败')
+                }
+              }).catch(err => {
+                parent.index.$message.error('请求出错了：' + err)
+              })
+            }
+          } else {
+            return false
+          }
+        })
+      },
+
+    }
+  });
+</script>
+
+</html>

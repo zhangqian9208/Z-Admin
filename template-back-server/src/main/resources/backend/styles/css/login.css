@@ -1,0 +1,132 @@
+/* 登录页面背景色 */
+body{
+  margin: 0;
+  background-color: #383c4d;
+  font-family: "Microsoft YaHei","微软雅黑", Tahoma, Verdana;
+  min-height: 100vh;
+  min-width: 1200px;
+}
+/* 左上角LOGO部分样式 */
+.login-body .login-banner {
+  height: 70px;
+  padding: 20px 0;
+}
+
+/* logo部分 */
+.login-body .login-banner .logo {
+  width: 220px;
+  height: 40px;
+  margin: 16px 5px -10px 70px;
+  background: url(../../images/logo.png) no-repeat;
+  float: left;
+}
+
+/* 输入文本框部分 */
+
+.login-body .login-banner h1 {
+  font-size: 22px;
+  color: #fff;
+}
+
+/* 登录中间白色部分 */
+.login-body .login-box {
+  width: 650px;
+  height: 400px;
+  padding: 35px 15px;
+  margin: 12vh auto 0;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.login-body .login-box h3 {
+  width: 380px;
+  height: 20px;
+  display: block;
+  font-size: 12px;
+  text-align: center;
+  color: #F76A6A;
+  margin: 16px auto 0;
+}
+
+.login-body .login-box h1 {
+  font-size: 30px;
+  text-align: center;
+  color: #6D6D6D;
+  margin: 0 auto;
+}
+
+.login-body .login-box h2 {
+  font-size: 14px;
+  text-align: center;
+  color: #7DA2CD;
+  margin: 12px auto 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.el-form-item__error {
+  left: 0px;
+}
+
+
+#ruleForm {
+  width: 450px;
+  height: 300px;
+  margin: 30px auto;
+  text-align: center;
+}
+
+#userName {
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  border-radius: 5px;
+  position: relative;
+  transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+#password {
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  border-radius: 5px;
+  position: relative;
+  transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+#denglu_wai {
+  margin: 16px 0;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 16px;
+  margin-left: 0px;
+  font-size: 14px;
+}
+
+#denglu_nei {
+  width: 300px;
+  height: 50px;
+  margin: 20px auto 0;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  padding: 0;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+}

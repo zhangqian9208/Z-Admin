@@ -1,0 +1,169 @@
+.box {
+    width: auto;
+    height: 100%;
+    /* background: #212431dc;  */
+    white-space: nowrap;
+
+}
+
+.el-scrollbar {
+    height: 100%;
+}
+
+.el-scrollbar__wrap {
+    overflow: scroll;
+    /* width: 110%; */
+    height: 103%;
+}
+/* 页面整体边距控制 */
+html,
+body,
+#app,
+.el-container {
+    /*设置内部填充为0，几个布局元素之间没有间距*/
+    padding: 0px;
+    /*外部间距也是如此设置*/
+    margin: 0px;
+    /*统一设置高度为100%*/
+    height: 100%;
+}
+
+.box {
+    width: auto;
+    height: 100%;
+    /* background: #212431dc;  */
+    white-space: nowrap;
+
+}
+
+.el-scrollbar {
+    height: 100%;
+}
+
+.el-scrollbar__wrap {
+    overflow: scroll;
+    /* width: 110%; */
+    height: 103%;
+}
+
+body {
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.el-menu {
+    border-right: 0px !important;
+}
+
+.el-container {
+    border: 0px !important;
+}
+
+.el-main {
+    margin: 0;
+    /* padding: 0; */
+    overflow: hidden;
+
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+}
+
+
+.el-tabs__header {
+    padding: 0;
+    position: relative;
+    margin: 0 0 0px !important;
+}
+
+.el-header i {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.el-aside {
+    color: #333;
+    background-color: white;
+}
+
+.el-avatar {
+    background: white !important;
+}
+
+/* 页面元素css提取 */
+#left {
+    background-color: #383c4d
+}
+
+#logo {
+    width: 100%;
+    height: 35px;
+    padding: 2px;
+    background-color: #fff;
+    text-align:center;
+    margin: auto;
+}
+
+#weizhi {
+    color: rgb(109, 109, 109);
+    /* float:left; */
+    margin-left: 0px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+#caozuo {
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    color: rgb(64, 158, 255);
+}
+
+.header {
+    background-color: rgba(189, 189, 189, 0.4);
+    height: 60px;
+    /* box-shadow: 0px 5px 1px #000000; */
+}
+
+#user {
+    font-size: 15px;
+    color: rgb(64, 158, 255);
+}
+
+#name {
+    margin-top: 5%;
+    margin-left: 30px;
+    float: left
+}
+
+#member {
+    float: right;
+    margin-top: 15px
+}
+
+#zhuquyu {
+    /* background-color: #f7f7f7e7; */
+    scrollbar-width: none;
+    height: calc(100vh - 60px);
+}
+
+#dibu {
+    background-color: #383c4d8c;
+    height: 35px;
+    text-align: center;
+}
+
+#footerText {
+    font-size: 10px;
+    margin-top: 9px;
+    color: rgb(255, 255, 255);
+}
+
+#iframe {
+    text-align: center;
+    margin-top: 0px;
+    width: 100%;
+    height: 88vh;
+}

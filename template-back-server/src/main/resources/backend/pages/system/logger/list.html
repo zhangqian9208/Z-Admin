@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入Element必要的依赖文件 -->
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="stylesheet" href="../../../plugins/element-ui/lib/theme-chalk/index.css">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../../plugins/vue/vue.js"></script>
+    <script src="../../../plugins/axios/axios-0.18.0.js" type="text/javascript"></script>
+    <!-- 引入组件库js -->
+    <script src="../../../plugins/element-ui/lib/index.js"></script>
+    <script src="../../../api/logger.js"></script>
+    <script src="../../../js/request.js"></script>
+<body>
+    <!-- div关联Vue依赖 -->
+    <div id="div">
+        <!-- 表格按钮区域 -->
+        <div style="margin-top: 10px;">
+            <!-- 按钮部分 -->
+            <el-button-group>
+                <el-button type="primary" icon="el-icon-refresh" size="medium" @click="reload()">刷新
+                </el-button>
+            </el-button-group>
+            <!--<div style="float: right;">
+                &lt;!&ndash; 搜索部分 &ndash;&gt;
+                <el-input v-model="input" placeholder="根据名称查询" size="small" style="width: 150px;">
+                </el-input>
+                <el-input v-model="input1" placeholder="根据区域查询" size="small" style="width: 150px;">
+                </el-input>
+                <el-button type="primary" icon="el-icon-search" size="small">查询</el-button>
+            </div>-->
+        </div>
+
+        <!-- 表格部分 -->
+        <el-row style="margin-top: 12px;">
+            <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"
+                @selection-change="handleSelectionChange">
+                <!--<el-table-column type="selection" width="55">
+                </el-table-column>
+                <el-table-column label="异常类" width="180">
+                    <template slot-scope="scope">{{ scope.row.classes }}</template>
+                </el-table-column>-->
+                <el-table-column prop="classes" label="异常类" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="method" label="异常方法" width="120">
+                </el-table-column>
+                <el-table-column prop="nickName" label="操作用户名" width="120">
+                </el-table-column>
+                <el-table-column prop="exception" label="异常信息" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="remark" label="开发者备注" width="120">
+                </el-table-column>
+                <el-table-column prop="created" label="捕获时间" width="200">
+                </el-table-column>
+<!--                <el-table-column label="操作">-->
+<!--                    <template slot-scope="scope">-->
+
+<!--                        <el-button size="mini" type="warning" icon="el-icon-edit-outline"-->
+<!--                            style="background-color: #FFB800;" @click="handleEdit(scope.$index, scope.row)">编辑-->
+<!--                        </el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
+            </el-table>
+        </el-row>
+        <!-- 数据总数部分start -->
+        <el-row style="margin-top: 12px;float: left;">
+            <el-tag type="success">&nbsp;<i class="el-icon-info"></i>&nbsp;共{{pages}}页,{{counts}}条数据</el-tag>
+        </el-row>
+        <!-- 数据总数部分end -->
+        <!-- 分页器start -->
+        <el-pagination class="pageList" :page-sizes="[10, 20, 30, 40]" :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="counts" :current-page.sync="page"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float:right;margin-top: 10px;">
+        </el-pagination>
+        <!-- 分页器end -->
+    </div>
+</body>
+<script>
+    // Vue核心对象
+    new Vue({
+        el: "#div",
+        // 数据集合
+        data() {
+            return {
+                input: '',
+                counts: 0,
+                // 打开时默认的当前页码
+                page: 1,
+                // 打开时默认的每页数据长度
+                pageSize: 10,
+                id: '',
+                status: '',
+                // 页面数据封装的数组
+                tableData: [],
+                //总页数
+                pages: '',
+            }
+
+        },
+        // 侦听器
+        computed: {},
+        // 钩子函数：页面初始化时被调用
+        created() {
+            // 加载页面数据的方法
+            this.init()
+            this.user = JSON.parse(localStorage.getItem('userInfo')).username
+        },
+        mounted() {
+        },
+        methods: {
+            //刷新页面的方法
+            reload(){
+                this.handleQuery();
+            },
+            async init() {
+                const params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    name: this.input ? this.input : undefined
+                }
+                //请求页面列表的方法
+                await getLoggerList(params).then(res => {
+                    if (String(res.code) === '1') {
+                        this.tableData = res.data.records || []
+                        this.counts = res.data.total
+                        this.pages = res.data.pages
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            //重新请求列表的方法
+            handleQuery() {
+                this.page = 1;
+                this.init();
+            },
+            // 添加
+            addMemberHandle(st) {
+                if (st === 'add') {
+                    window.parent.menuHandle({
+                        id: '2',
+                        url: '/backend/page/member/add.html',
+                        name: '添加员工'
+                    }, true)
+                } else {
+                    window.parent.menuHandle({
+                        id: '2',
+                        url: '/backend/page/member/add.html?id=' + st,
+                        name: '修改员工'
+                    }, true)
+                }
+            },
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.init()
+            },
+            handleCurrentChange(val) {
+                this.page = val
+                this.init()
+            }
+        }
+    });
+</script>
+
+</html>

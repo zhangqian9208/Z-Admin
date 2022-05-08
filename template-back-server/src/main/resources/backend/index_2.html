@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<!-- 页面版式02：菜单无法收回-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方未云|后台管理系统</title>
+    <!-- 引入Element必要的依赖文件 -->
+    <link rel="stylesheet" href="plugins/element-ui/lib/theme-chalk/index.css">
+    <script src="plugins/vue/vue.js"></script>
+    <script src="plugins/element-ui/lib/index.js"></script>
+    <script src="plugins/axios/axios-0.18.0.js" type="text/javascript"></script>
+    <!-- 引入本页自定义css样式 -->
+    <!-- 自定义图标 -->
+    <link rel="shortcut icon" href="images/cloud_logo_2.png" />
+    <!-- css样式 -->
+    <style>
+        .box {
+            width: 208px;
+            height: 100%;
+            /* background: #212431dc;  */
+            white-space: nowrap;
+        }
+
+        .el-scrollbar {
+            height: 100%;
+        }
+
+        .el-scrollbar__wrap {
+            overflow: scroll;
+            width: 110%;
+            height: 103%;
+        }
+
+        html,
+        body,
+        #app,
+        .el-container {
+            /*设置内部填充为0，几个布局元素之间没有间距*/
+            padding: 0px;
+            /*外部间距也是如此设置*/
+            margin: 0px;
+            /*统一设置高度为100%*/
+            height: 100%;
+        }
+    </style>
+
+<body>
+    <!-- div关联Vue依赖 -->
+    <div id="div">
+        <!-- 头部外层容器 start -->
+        <el-container style="box-shadow: 5px 5px 3px #000000; background-color: rgba(189, 189, 189, 0.295);">
+            <!-- 头部模块 start -->
+            <el-header class="header" style="height: 60px;">
+                <el-container>
+                    <div>
+                        <a herf="index.html">
+                            <el-image src="images/logo_new_xiao.png" class="logo_img" herf="index.html"
+                                style="height: 30px;margin-top:6%;" @click="userPage"></el-image>
+                        </a>
+                    </div>
+                    <!-- 头部_导航部分start -->
+                    <el-menu :default-active="activeIndex2" mode="horizontal" @select="handleSelect"
+                        text-color="#050518" active-text-color="#409EFF" style="margin-left: auto;">
+                    </el-menu>
+                    <!-- 头部_导航部分end -->
+
+                    <el-dropdown style="float: left;margin-top: 0.7%">
+
+                        <span class="el-dropdown-link" id="name" style="margin-top: 5%;margin-left:30px;float: left">
+                            <i class="el-icon-user-solid" style="font-size: 15px;color: rgb(64, 158,255);"></i>
+                            {{nickname}},您好<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <!-- <el-dropdown-item>修改密码</el-dropdown-item> -->
+                            <el-dropdown-item>
+                                <el-button type="text" @click="dialogVisiblePassword = true">修改密码</el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                                <el-button type="text" @click="logout">退出登录</el-button>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+
+                </el-container>
+            </el-header>
+            <!-- 头部模块 end -->
+        </el-container>
+        <!-- 头部外层容器 end -->
+
+
+        <el-container style="line-height: 20px;cursor: pointer;height: calc(100vh - 60px);">
+            <!-- 左侧导航栏start style="background-color: #383c4d;"-->
+            <el-aside width="210px" style="background-color: #383c4d">
+                <div class="box">
+                    <el-scrollbar>
+                        <!-- 功能菜单提示 -->
+                        <div style="text-align: center;margin-top: 15px;margin-left: -15px;margin-bottom: 10px;">
+                            <!-- <el-tag type="info">&nbsp;&nbsp;&nbsp;模板-后台功能菜单&nbsp;&nbsp;&nbsp;</el-tag> -->
+                        </div>
+                        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
+                            @close="handleClose" background-color="#383c4d" text-color="#fff"
+                            active-text-color="rgb(64, 158,255)" style="width:210px;">
+
+                            <el-submenu index="1">
+                                <template slot="title">
+                                    <i class="el-icon-s-tools"></i>
+                                    <span>系统功能管理</span>
+                                </template>
+                                <el-menu-item index="1-1"><i class="el-icon-tickets"></i>部门管理</el-menu-item>
+                                <el-menu-item index="1-2"><i class="el-icon-user"></i>用户管理</el-menu-item>
+                                <el-menu-item index="1-3"><i class="el-icon-coordinate"></i>角色管理</el-menu-item>
+                                <el-menu-item index="1-4"><i class="el-icon-box"></i>模块管理</el-menu-item>
+                                <el-menu-item index="1-5"><i class="el-icon-setting"></i>参数设置</el-menu-item>
+                                <el-menu-item index="1-6"><i class="el-icon-printer"></i>系统运行日志</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="2">
+                                <template slot="title">
+                                    <i class="el-icon-s-order"></i>
+                                    <span>校区会员管理</span>
+                                </template>
+                                <el-menu-item index="2-1"><i class="el-icon-school"></i>校区管理</el-menu-item>
+                                <el-menu-item index="2-2"><i class="el-icon-user"></i>会员管理</el-menu-item>
+                                <el-menu-item index="2-3"><i class="el-icon-monitor"></i>在线状态</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="3">
+                                <template slot="title">
+                                    <i class="el-icon-s-comment"></i>
+                                    <span>口才课程管理</span>
+                                </template>
+                                <el-menu-item index="3-1"><i class="el-icon-files"></i>口才级别管理</el-menu-item>
+                                <el-menu-item index="3-2"><i class="el-icon-notebook-2"></i>口才教案管理</el-menu-item>
+                                <el-menu-item index="3-3"><i class="el-icon-data-analysis"></i>口才课件管理</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="4">
+                                <template slot="title">
+                                    <i class="el-icon-s-order"></i>
+                                    <span>书法课程管理</span>
+                                </template>
+                                <el-menu-item index="4-1"><i class="el-icon-files"></i>口才级别管理</el-menu-item>
+                                <el-menu-item index="4-2"><i class="el-icon-notebook-2"></i>口才教案管理</el-menu-item>
+                                <el-menu-item index="4-3"><i class="el-icon-data-analysis"></i>口才课件管理</el-menu-item>
+                            </el-submenu>
+
+
+                            <!-- 加载一级菜单
+                            <el-submenu v-for="level in levels" :index="level.sort" style="width: 228px">
+                                <template slot="title">
+                                    <i class="el-icon-collection"></i>
+                                    <span>{{level.name}}</span>
+                                </template>
+
+                                加载二级菜单
+                                <el-menu-item v-for="(item,index) in level.eloPdfList" :index="level.sort+'-'+item.sort"
+                                    @click="operation(item)">
+                                    <i class="el-icon-data-board"></i>
+                                    {{item.name}}
+                                </el-menu-item>
+
+                            </el-submenu> -->
+
+                        </el-menu>
+                    </el-scrollbar>
+                </div>
+            </el-aside>
+            <!-- 主区域部分start -->
+            <el-container style="background-color: #f7f7f7e7;scrollbar-width: none;">
+                <!-- 主区域部分嵌套 -->
+                <el-main style="scrollbar-width: none;">
+                    <div style="padding-top:0px;height: 88vh;">
+                        <iframe src="pages\system\dept\list.html" id="pdf" frameborder="0" scrolling="no"
+                            id="external-frame" onload="setIframeHeight(this) " target=_parent
+                            style="text-align: center;margin-top: 0px;width:100%;height: 88vh;"></iframe>
+                    </div>
+                </el-main>
+                <!-- 页面底部 -->
+                <el-footer style="background-color: #383c4d8c;height: 40px;text-align: center;">
+                    <span> </span>
+                    <p style="font-size: 10px;margin-top: 8px;color: rgb(255, 255, 255);">©2022-方未云后台管理系统-方未教育技术支持中心
+                    </p>
+                </el-footer>
+            </el-container>
+            <!-- 主区域部分end -->
+        </el-container>
+        <!-- 左侧导航栏end -->
+
+        <!-- 修改密码弹窗start  -->
+        <el-dialog title="方未云账户密码修改" :visible.sync="dialogVisiblePassword" width="40%" :before-close="handleClose">
+            <span style="margin-bottom: 20px;margin-top: 0px;margin-left:25px;padding-top: 0px">
+                <strong>当前登录账户：</strong>{{nickname}}
+                <span>（用户名请联系方未工作人员更改）</span>
+            </span>
+            <el-form :model="password" :rules="rules" ref="ruleForm" label-width="80px">
+                <el-form-item label="旧密码" prop="oldPassword">
+                    <el-input placeholder="请输入旧密码" v-model="password.oldPassword" maxlength="20" show-word-limit>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="新密码">
+                    <el-input placeholder="请输入新密码" v-model="password.newPassword01" show-password maxlength="20"
+                        show-word-limit></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码">
+                    <el-input placeholder="请再次输入新密码" v-model="password.newPassword02" show-password maxlength="20"
+                        show-word-limit></el-input>
+                </el-form-item>
+            </el-form>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisiblePassword = false">取 消</el-button>
+                <el-button type="primary" @click="changePassword">提 交</el-button>
+            </div>
+        </el-dialog>
+        <!--修改密码弹窗end-->
+
+    </div>
+
+
+</body>
+<script>
+    // Vue核心对象
+    new Vue({
+        el: "#div",
+        data() {
+            return {
+                name: '',
+                nickname: '',
+                levels: [],
+                results: [],
+                checked: [],
+                pdfPath: '',
+                vectorPdfPath: '',
+                dialogVisiblePassword: false,
+                password: {
+                    id: window.localStorage.id,
+                    oldPassword: '',
+                    newPassword01: '',
+                    newPassword02: '',
+                },
+                tableData: [{
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-08',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-06',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-07',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }],
+                multipleSelection: []
+            }
+
+        },
+        methods: {
+            //登录气泡及弹窗关闭使用的方法
+            handleClose(done) {
+                {
+                    done();
+                }
+            },
+            //跳转用户中心的方法
+            userPage() {
+                window.open('/user.html', '_self');
+            },
+            //退出登录的方法
+            logout() {
+                //alert("退出方法被执行了");
+                //1.获取localStorage
+                let storage = window.localStorage;
+                //2.发送请求，清除登录状态
+                axios.post('/member/logout', '{"id":"' + storage.id + '"}').then(function (response) {
+                    //1.获取响应数据
+                    let data = response.data;
+                    //2.提示
+                    //alert("您已成功退出系统！");
+                }).catch(function (err) {
+                    console.log(err)
+                });
+                //3.清理localStorage
+                window.localStorage.clear();
+                //4.通过调用checkLogin方法重置主页面的右上角显示区域
+                this.checkLogin();
+            },
+            
+            //点击按钮，验证登录状态，并且组合配置路径
+            operation(eloPdf) {
+                let _this = this;
+                //加载路径配置文件
+                //加载路径配置文件,请求向量加密
+                //_this.vector(eloPdf);
+                //4.发送post请求，获取配置文件信息
+                axios.post('/eloPdf/vector', '{"pdf":"' + eloPdf.pdf + '"}').then(function (response) {
+                    //5.得到响应数据
+                    var res = response.data;
+                    //alert(JSON.stringify(res));
+                    //this.vectorPdfPath = res.data;
+                    //alert(vectorPptPath);
+                    //更改iframe的属性
+                    //alert(pdfPath+vectorPdfPath);
+                    document.querySelector("iframe").src = pdfPath + res.data;
+                    //重新刷新iframe页面
+                    document.querySelector('iframe').contentWindow.location.reload();
+                }).catch(function (err) {
+                    console.log(err)
+                });
+                /*
+                //不使用向量加密的方法
+                //更改iframe的属性
+                //alert(pdfPath);
+                document.querySelector("iframe").src = pdfPath + eloPdf.pdf;
+                //重新刷新iframe页面
+                document.querySelector('iframe').contentWindow.location.reload();*/
+            },
+            //获取虚拟路径的方法
+            path() {
+                //4.发送post请求，获取配置文件信息
+                axios.post('/eloPdf/path').then(function (response) {
+                    //5.得到响应数据
+                    var res = response.data;
+                    this.pdfPath = res.data.para;
+                    //alert(pdfPath);
+                }).catch(function (err) {
+                    console.log(err)
+                });
+            },
+
+            //加载数据的方法
+            findPdf() {
+                let _this = this;
+                //alert("加载数据测试");
+                //4.发送post请求，获取题目信息
+                axios.post('/eloPdf/list').then(function (response) {
+                    //5.得到响应数据
+                    var res = response.data;
+                    //alert(JSON.stringify(res));
+                    _this.levels = res.data;
+                }).catch(function (err) {
+                    console.log(err)
+                });
+            },
+        },
+        //页面刷新时启动的方法
+        created() {
+            //获取当前的pdf对象数据
+            this.findPdf();
+            //验证当前的登录信息
+            this.checkLogin();
+            //获取相对路径的配置参数
+            this.path();
+        },
+    });
+</script>
+
+</html>
