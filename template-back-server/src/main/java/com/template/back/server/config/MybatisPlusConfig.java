@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.incrementer.OracleKeyGenerator;
 import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.SqlExplainInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -56,16 +55,16 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * 性能分析器
+     * 性能分析器，更新到3.4.2版本后依赖不可用
      * @return
-     */
+
     @Bean
     public PerformanceInterceptor performanceInterceptor(){
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         performanceInterceptor.setMaxTime(300);
         performanceInterceptor.setFormat(true);
         return performanceInterceptor;
-    }
+    }*/
 
     /**
      * 乐观锁插件

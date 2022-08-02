@@ -20,6 +20,11 @@
     </properties>
     <!--导入依赖-->
     <dependencies>
+        <!-- redis起步依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!-- hutool插件 -->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -36,11 +41,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
         <!--redis依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
