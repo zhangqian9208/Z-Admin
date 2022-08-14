@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -17,6 +18,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 //开启定时任务
 @EnableScheduling
+//启用Spring Cache框架注解
+@EnableCaching
 //由于上传逻辑移动至common工程，所以需要改变扫描把范围才能扫描到
 @ComponentScan(basePackages={"com.template"})
 //排除mongo的自动配置

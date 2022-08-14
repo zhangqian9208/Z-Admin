@@ -1,6 +1,7 @@
 package com.template.back.server.service.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.template.back.common.pojo.system.Dept;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @version 1.0
  * 部门管理业务层接口
  */
-public interface DeptService {
+public interface DeptService extends IService<Dept> {
 
     /**
      * 分页查询的方法

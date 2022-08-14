@@ -1,6 +1,7 @@
 package com.template.back.server.service.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.template.back.common.pojo.system.Setting;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @version
  * 设置类业务层
  */
-public interface SettingService {
+public interface SettingService extends IService<Setting> {
     /**
      * 分页查询的方法
      * @param page

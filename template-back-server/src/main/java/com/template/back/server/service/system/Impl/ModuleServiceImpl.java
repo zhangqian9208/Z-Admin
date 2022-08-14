@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.template.back.common.mapper.system.ModuleMapper;
 import com.template.back.common.mapper.system.RoleMapper;
 import com.template.back.common.pojo.system.Admin;
@@ -25,7 +26,7 @@ import java.util.List;
  * 模块管理业务层
  */
 @Service  //标记为SpringBoot管理的业务层
-public class ModuleServiceImpl implements ModuleService {
+public class ModuleServiceImpl extends ServiceImpl<ModuleMapper,Module> implements ModuleService {
     //注入mapper
     @Autowired
     private ModuleMapper moduleMapper;
@@ -108,9 +109,7 @@ public class ModuleServiceImpl implements ModuleService {
         if(ObjectUtil.isAllNotEmpty(module.getName(),module.getCurl(),module.getCtype(),module.getState())){
             //01.获取当前操作的用户信息
             Admin admin = AdminThreadLocal.get();
-            //02.更改当前数据的修改人信息
-            module.setOperator(admin.getName());
-            //03.保存数据
+            //02.保存数据
             int insert = this.moduleMapper.insert(module);
             return insert == 1;
         }

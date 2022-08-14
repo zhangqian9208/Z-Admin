@@ -1,6 +1,7 @@
 package com.template.back.server.service.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.template.back.common.pojo.system.Module;
 import com.template.back.common.vo.TreeVo;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * 模块管理业务层约束接口
  */
-public interface ModuleService {
+public interface ModuleService extends IService<Module> {
 
     /**
      * 分页查询

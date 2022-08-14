@@ -3,6 +3,7 @@ package com.template.back.server.service.system.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.template.back.common.mapper.system.LoggerMapper;
 import com.template.back.common.pojo.system.Logger;
 import com.template.back.server.service.system.LoggerService;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class LoggerServiceImpl implements LoggerService {
+public class LoggerServiceImpl extends ServiceImpl<LoggerMapper,Logger> implements LoggerService {
     //注入自定义日志业务层
     @Autowired
     private LoggerService loggerService;

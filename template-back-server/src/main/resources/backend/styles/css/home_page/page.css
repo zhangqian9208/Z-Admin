@@ -1,0 +1,590 @@
+
+
+
+.course-wapper .course-area .tab-content .info-item .info-content .pd20 {
+    padding-bottom: 20px;
+}
+
+blockquote, body, dd, dir, dl, fieldset, form, h1, h2, h3, h4, h5, h6, hr, input, menu, ol, p, pre, ul, xmp {
+    margin: 0;
+}
+
+/* 登录部分 */
+.el-dropdown-link {
+    cursor: pointer;
+    color: #525252;
+    padding-top: 6%;
+    margin-right: 40px;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+
+
+
+/* 顶部benner使用 */
+.header-wrapper {
+    /* height: 200px; */
+    /* position: relative; */
+    /* background-image: url(./images/user_bj.jpg); */
+    background-size: 100% 100%;
+    background-position-y: -2px;
+    background-repeat: no-repeat;
+}
+.header-wrapper .user-info-wrapper {
+    /* background: rgba(255, 255, 255, 1); */
+    background-size: 700px 120px;
+    background-repeat: no-repeat;
+    background-position: right top;
+    -webkit-box-shadow: 0 8px 7px 0 rgb(70 109 226 / 3%);
+    box-shadow: 0 8px 7px 0 rgb(70 109 226 / 3%);
+    border-radius: 8px;
+    /* padding: 30px 30px 40px 30px; */
+    width: 1190px;
+    height: 310px;
+    margin: 0 auto;
+    position: relative;
+    top: 68px;
+}
+.header-wrapper .user-info-wrapper .top-wrapper {
+    height: 96px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #eff4ff;
+}
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "微软雅黑";
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    /* background-color: rgb(177, 177, 177); */
+}
+html {
+    font-size: 10px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.header-wrapper .user-info-wrapper .top-wrapper {
+    height: 96px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #eff4ff;
+}
+.header-wrapper .user-info-wrapper .top-wrapper .info-header-wrapper {
+    display: inline-block;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+.header-wrapper .user-info-wrapper .top-wrapper .right-wrapper {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: right;
+    position: relative;
+}
+.header-wrapper .user-info-wrapper .bottom-wrapper {
+    padding: 40px 20px 40px 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+/* 左侧顶部第一行字体 */
+.header-wrapper .user-info-wrapper .top-wrapper .info-header-wrapper .user-info .name-wrapper {
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #2c2c40;
+    letter-spacing: 0;
+    line-height: 18px;
+}
+blockquote, body, dd, dir, dl, fieldset, form, h1, h2, h3, h4, h5, h6, hr, input, menu, ol, p, pre, ul, xmp {
+    margin: 0;
+}
+/* 左侧顶部第二行字体 */
+.header-wrapper .user-info-wrapper .top-wrapper .info-header-wrapper .user-info .info-wrapper {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #b0b0b1;
+    letter-spacing: 0;
+    line-height: 12px;
+    margin-top: 8px;
+}
+
+
+/* 欢迎使用图标和文字样式 */
+.header-wrapper .user-info-wrapper .top-wrapper .right-wrapper #integral-tips {
+    display: none;
+    position: absolute;
+    width: 229px;
+    height: 32px;
+    top: -14px;
+    right: 10px;
+}
+.header-wrapper .user-info-wrapper .top-wrapper .right-wrapper .cash-wapper {
+    height: 18px;
+    width: 18px;
+    margin-top: 18px;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+button, input, label, select, textarea {
+    vertical-align: middle;
+    border: none;
+    background: 0 0;
+    font-size: 12px;
+    font-family: '\5FAE\8F6F\96C5\9ED1';
+    outline: 0;
+}
+.header-wrapper .user-info-wrapper .top-wrapper .right-wrapper .text-warpper {
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #2c2c40;
+    letter-spacing: 0;
+    line-height: 18px;
+    font-weight: 100;
+    margin-top: 23px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+
+/* 彩色按钮 */
+/* 彩色按钮01 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper.buy-course {
+    background-image: linear-gradient(
+123deg
+,#6bc0ff 0,#3a8cf6 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(0 177 255 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(0 177 255 / 60%);
+}
+/* 彩色按钮02 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper.course-complate {
+    background-image: linear-gradient(
+123deg
+,#acf057 0,#88d838 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(182 247 43 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(182 247 43 / 60%);
+    margin-left: 40px;
+}
+
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper {
+    width: 242px;
+    height: 105px;
+    border-radius: 8px;
+    padding: 20px 22px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+/* 彩色按钮03 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper.week-study {
+    background-image: linear-gradient(
+123deg
+,#ffc443 0,#ff8a28 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(252 178 70 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(252 178 70 / 60%);
+    margin-left: 40px;
+}
+/* 彩色按钮04 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper.beyond-partter {
+    background-image: linear-gradient(
+123deg
+,#ff6b7d 0,#ff4c55 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(255 76 85 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(255 76 85 / 60%);
+    margin-left: 40px;
+}
+
+/* 彩色按钮的图 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper .img {
+    display: inline-block;
+}
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper .img img {
+    width: 50px;
+    height: 50px;
+}
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper .info {
+    margin-left: 18px;
+}
+/* 彩色按钮对应的大文字 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper .info .text {
+    font-family: PingFangSC-Regular;
+    font-size: 26px;
+    color: #fff;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-top: 7px;
+}
+/* 彩色按钮对应的小文字 */
+.header-wrapper .user-info-wrapper .bottom-wrapper .item-wapper .info p {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #fff;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-top: 11px;
+    font-weight: 100;
+}
+
+
+/* 我的课程部分样式 */
+.tab-wrapper {
+    width: 1190px;
+    height: 58px;
+    background: #fff;
+    -webkit-box-shadow: 0 8px 7px 0 rgb(70 109 226 / 3%);
+    box-shadow: 0 8px 7px 0 rgb(70 109 226 / 3%);
+    border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 98px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.tab-wrapper .left-warpper {
+    position: relative;
+    opacity: .6;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: 16px;
+    color: #2c2c40;
+    text-align: center;
+    line-height: 58px;
+}
+.tab-wrapper .line-span {
+    position: relative;
+    display: inline-block;
+    height: 100%;
+}
+.tab-wrapper span {
+    color: #2c2c40;
+}
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "微软雅黑";
+}
+
+/* 我的课程下方横线 */
+.tab-wrapper .active .line-span::before, .tab-wrapper .line-span:hover::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width:150px;
+    height: 2px;
+    background: #2c2c40;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 12px;
+    color: #2c2c40;
+}
+
+/* 下方课程选择部分 */
+/* 这里的宽度影响页脚 */
+.course-wapper {
+    position: relative;
+    /* width: 1190px; */
+    margin: 0 auto;
+}
+.course-wapper .course-area {
+    background: #fff;
+    -webkit-box-shadow: 0 8px 7px 0 rgb(25 140 255 / 4%);
+    box-shadow: 0 8px 7px 0 rgb(25 140 255 / 4%);
+    border-radius: 8px;
+    width: 1190px;
+    /* height: 850px; */
+    margin: 30px auto 60px;
+    padding: 70px 30px 50px 30px;
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+/* 左侧导航菜单 */
+.course-wapper .course-area .tab-header {
+    display: inline-block;
+    width: 120px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.course-wapper .course-area .tab-header .title.active {
+    font-family: PingFangSC-Semibold;
+    font-size: 16px;
+    color: #0b2fb5;
+}
+.course-wapper .course-area .tab-header .title {
+    height: 46px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #9a9aa4;
+    line-height: 72px;
+    width: 119px;
+}
+.course-wapper .course-area .tab-header .title.active a {
+    color: #0b2fb5;
+}
+a:link, a:visited {
+    text-decoration: none;
+    cursor: pointer;
+    outline: 0;
+    blr: expression(this.onFocus=this.blur())
+}
+a {
+    color: #333;
+}
+a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: transparent;
+    color: #333;
+}
+
+/* 右侧课程内容样式 */
+.course-wapper .course-area .tab-content-box {
+    width: 1010px;
+    overflow-x: hidden;
+}
+.course-wapper .course-area .tab-content {
+    padding-left: 30px;
+    border-left: 1px solid #eff4ff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-line-pack: baseline;
+    align-content: baseline;
+    height: 100%;
+    width: 1010px;
+    padding-right: 20px;
+    padding-top: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+/* 右侧课程选择模块样式 */
+.course-wapper .course-area .tab-content .info-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 960px;
+    min-height: 132px;
+    max-height: 142px;
+    /* background: #f9fbff; */
+    background: #4c4c5710;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+}
+/* 右侧课程选择模块图片样式 */
+.course-wapper .course-area .tab-content .info-item .img-content {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 30px;
+    width: 200px;
+    height: 132px;
+}
+.course-wapper .course-area .tab-content .info-item .img-content img {
+    width: 150px;
+    height: 92px;
+    border-radius: 5px;
+}
+
+/* 右侧课程选择文字样式 */
+.course-wapper .course-area .tab-content .info-item .info-content {
+    padding-top: 20px;
+    width: 560px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+.course-wapper .course-area .tab-content .info-item .info-content .course-title {
+    font-size: 18px;
+    color: #2e2622;
+    letter-spacing: 0;
+    width: 330px;
+    text-align: left;
+    line-height: 18px;
+    padding-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.course-wapper .course-area .tab-content .info-item .info-content .pd20 {
+    padding-bottom: 20px;
+}
+blockquote, body, dd, dir, dl, fieldset, form, h1, h2, h3, h4, h5, h6, hr, input, menu, ol, p, pre, ul, xmp {
+    margin: 0;
+}
+/* 最新版小图标样式 */
+.course-wapper .course-area .tab-content .info-item .info-content .second-row .learn-now {
+    padding: 0 7px;
+    width: 50px;
+    height: 20px;
+    background: #198cff;
+    border-radius: 100px 100px 100px 0;
+    font-family: PingFangSC-Semibold;
+    font-size: 12px;
+    color: #fff;
+    letter-spacing: 0;
+    line-height: 18px;
+    margin-right: 6px;
+}
+.pointer {
+    cursor: pointer;
+}
+/* 下方文字样式 */
+.course-wapper .course-area .tab-content .info-item .info-content .second-row .step-2 {
+    font-size: 14px;
+    color: #2e2622;
+    letter-spacing: 0;
+    text-align: justify;
+    line-height: 21px;
+}
+.course-wapper .course-area .tab-content .info-item .info-content .second-row .step-2 .step-2-1 {
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 0;
+    text-align: justify;
+    line-height: 21px;
+}
+.course-wapper .course-area .tab-content .info-item .info-content .second-row .step-2 .step-2-2 {
+    font-size: 14px;
+    color: #2e2622;
+    letter-spacing: 0;
+    text-align: justify;
+    line-height: 21px;
+}
+
+
+/* 右侧选择区域样式 */
+.course-wapper .course-area .tab-content .info-item .img-info {
+    width: 166px;
+    height: 100%;
+    /* background: #f3f5fa; */
+    background: #1f1f3710;
+    border-radius: 0 8px 8px 0;
+}
+.course-wapper .course-area .tab-content .info-item .img-info .step-progress {
+    width: auto;
+    height: auto;
+}
+/* 右侧选择按钮样式 */
+.course-wapper .course-area .tab-content .info-item .img-info .step-progress .button-ing {
+    background: #fa814c;
+    border-radius: 16px;
+    width: 106px;
+    height: 32px;
+    margin: 0 auto;
+    margin-top: 50px;
+    line-height: 32px;
+    text-align: center;
+    color: #fff;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    letter-spacing: 0;
+    cursor: pointer;
+}
+/* 选择按钮图标样式 */
+.course-wapper .course-area .tab-content .info-item .img-info .step-progress .button-ing img {
+    width: 13px;
+    height: 10px;
+}
+
+/* 页脚部分 */
+.yejiao {
+    float: left;
+    width: 100%;
+    height: 260px;
+    background: url(images\dbbj.jpg);
+}
+body {
+    text-align: left;
+    font-size: 1.4rem;
+    color: #333333;
+    line-height: 2.8rem;
+    font-family: "微软雅黑", "microsoft yahei", "Arial", "Helvetica Neue", "sans-serif", "宋体", "simsun";
+}
+.main {
+    width: 1200px;
+    /* height: inherit; */
+    margin: 0 auto;
+    overflow: hidden;
+}
+.yejiao .tess .left {
+    padding-left: 50px;
+    padding-top: 35px;
+    margin-bottom: 50px;
+    float: left;
+}
+.yejiao .tess .left img {
+    padding-bottom: 10px;
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+.yejiao .tess .left p {
+    width: 360px;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 25px;
+}
+.yejiao .tess .center {
+    padding-left: 105px;
+    padding-top: 37px;
+    float: left;
+}
+.yejiao .tess .center p {
+    width: 360px;
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 25px;
+}
+.yejiao .tess .right {
+    padding-left: 35px;
+    padding-top: 35px;
+    float: left;
+}
+.right {
+    width: 285px;
+    float: right;
+    padding-left: 20px;
+}
+element.style {
+    color: #777a7f;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 12px;
+}

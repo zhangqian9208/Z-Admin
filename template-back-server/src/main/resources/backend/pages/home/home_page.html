@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<!-- 页面版式03：菜单可以收回，顶部带标签 -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 浏览器title -->
+    <title>Z-Admin|系统中心</title>
+    <!-- 自定义图标 -->
+    <link rel="shortcut icon" href="../../images/cloud_logo_2.png" />
+    <!-- 引入vue开发环境 -->
+    <script src="../../plugins/vue/vue.js"></script>
+    <!-- 引入组件库,包含自定义请求方法 -->
+    <script src="../../plugins/axios/axios.min.js"></script>
+    <script src="../../plugins/element-ui/lib/index.js"></script>
+    <script src="../../js/request.js"></script>
+    <!-- 引入element样式 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入画图样式 -->
+    <script src="../../js/home_page/home_page.js"></script>
+    <link rel="stylesheet" href="../../styles/css/home_page/home_page.css">
+    <!-- 引入css -->
+    <!-- <link rel="stylesheet" href="../../styles/css/home_page/page.css"> -->
+</head>
+
+<body>
+    <div id="app">
+        <!-- 服务器状态start -->
+        <div
+            style="margin-left: 22px;width: 300px;height:470px;border-radius: 10px;background-color: #e6e6e6;text-align: center;box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);float: left;">
+            <!-- 提示文字 -->
+            <div style="padding-top: 20px;text-align: left;padding-bottom: 10px;padding-left: 20px;">
+                <i class="el-icon-receiving"></i>
+                <span style="color: rgb(78, 78, 78);text-align: left;font-size: 16px;">Z-Admin自检系统</span>
+            </div>
+            <hr>
+            <!-- 具体信息 -->
+            <div style="margin: 20px;text-align: left;">
+                <div style="padding-left: 10px;padding: 10px;">
+                    <i class="el-icon-loading" style="color:#1a7cfc;font-size: 18px;"></i>
+                    <span style="padding-left: 10px;">自动检测执行中...</span>
+                </div>
+                <div style="padding-left: 10px;padding: 10px;">
+                    <i class="el-icon-success" style="color:#1a7cfc;font-size: 18px;"></i>
+                    <span style="padding-left: 10px;">服务器状态：{{state}}</span>
+                </div>
+                <div style="padding-left: 10px;padding: 10px;">
+                    <i class="el-icon-s-platform" style="color:#1a7cfc;font-size: 18px;"></i>
+                    <span style="padding-left: 10px;">当前连接：{{server}}</span>
+                </div>
+                <div style="padding-left: 10px;padding: 10px;">
+                    <i class="el-icon-files" style="color:#1a7cfc;font-size: 18px;"></i>
+                    <span style="padding-left: 10px;">系统日期：{{date | formatDate}}</span>
+                </div>
+                <div style="padding-left: 10px;padding: 10px;">
+                    <i class="el-icon-time" style="color:#1a7cfc;font-size: 18px;"></i>
+                    <span style="padding-left: 10px;">系统时间：{{date | formatTime}}</span>
+                </div>
+            </div>
+        </div>
+        <!-- 服务器状态end -->
+
+        <!-- 服务器运算中效果start -->
+        <div
+            style="width: calc(100vw - 365px);height:470px;margin-left:345px;background-color: #383c4d;border-radius: 10px;text-align: center;box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.1);">
+            <!-- 提示文字 -->
+            <div style="padding-top: 20px;padding-bottom: 10px;padding-left: 20px;text-align: left;">
+                <i class="el-icon-cloudy" style="color: #e6e6e6;"></i>
+                <span
+                    style="color: rgb(248, 248, 248);text-align: left;font-size: 16px;">Z-Admin持续计算中，提供服务端支持[GPU算法视觉呈现]</span>
+            </div>
+            <hr>
+            <!-- 运算图画板 -->
+            <div style="text-align: center;float: left;">
+                <canvas id="canvas" style="text-align: center;padding-left: 10px;"></canvas>
+            </div>
+        </div>
+        <!-- 服务器运算中效果end -->
+    </div>
+
+
+    <!-- vue部分 -->
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    //当前校区的数据
+                    campus: { number: '1' },
+                    //当前连接
+                    server: '华北区集群',
+                    //授权天数
+                    ofDay: '1',
+                    // 当前授权科目
+                    subject: 0,
+                    surpass: "20%",
+                    // 服务器状态
+                    state: "正常",
+                    date: new Date(),
+                }
+            },
+            // 方法集合
+            methods: {
+                // echarts方法集合
+                // 更改上方异常检测模块数据
+                error() {
+                    this.state = "检测中..."
+                    this.server = "检测中..."
+                    this.timer = null
+                    // 关闭自检效果
+                    this.timer = setTimeout(() => {
+                        this.state = "异常"
+                        this.server = "暂无连接"
+                    }, 1500)
+                },
+                // 获取当前课程的权限
+                async init() {
+                    // 测试当前服务器状态
+                    axios.post('/system/user/test').then(function (response) {
+                        // alert(response.$message)
+                    }, error => {
+                        this.error()
+                    })
+                },
+            },
+            // 过滤器
+            filters: {
+                // 时间格式化
+                formatDate(value) {
+                    let date = new Date(value);
+                    let y = date.getFullYear();
+                    let MM = date.getMonth() + 1;
+                    MM = MM < 10 ? "0" + MM : MM;
+                    let d = date.getDate();
+                    d = d < 10 ? "0" + d : d;
+                    return y + "-" + MM + "-" + d;
+                },
+                // 时间格式化
+                formatTime(value) {
+                    let date = new Date(value);
+                    let h = date.getHours();
+                    h = h < 10 ? "0" + h : h;
+                    let m = date.getMinutes();
+                    m = m < 10 ? "0" + m : m;
+                    let s = date.getSeconds();
+                    s = s < 10 ? "0" + s : s;
+                    // return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
+                    return h + ":" + m + ":" + s;
+                }
+            },
+
+            // 钩子函数，加载完成时调用
+            mounted() {
+                var that = this;
+                this.timer = setInterval(() => {
+                    that.date = new Date(); //修改数据date
+                }, 1000);
+            },
+            created() {
+                // 请求课程列表数据
+                Promise.all([
+                    this.init(),
+                ]).then(res => {
+                    // 默认选中课程
+                    this.defaultCourse(this.course)
+                })
+            },
+            // 钩子函数，销毁前执行
+            beforeDestroy() {
+                if (this.timer) {
+                    clearInterval(this.timer); //在Vue实例销毁前，清除我们的定时器
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

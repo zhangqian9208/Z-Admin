@@ -6,6 +6,10 @@ import com.template.back.common.pojo.system.Setting;
 import com.template.back.common.service.LoggerService;
 import com.template.back.common.vo.R;
 import com.template.back.server.service.system.SettingService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import java.util.List;
  * @version 1.0
  * 自定义设置管理控制层程序，设置内容以键值对的形式存在
  */
+@Api(tags = "自定义设置相关接口")  //knife4j注解，用于自动生成api文档
 @RestController   //标记为控制层
 @RequestMapping("/system/setting")   //定义请求映射路径
 @Slf4j   //注解日志
@@ -36,6 +41,12 @@ public class SettingController {
      * @param name
      * @return
      */
+    @ApiOperation(value = "查询设置列表接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "当前页码",required = true,defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize",value = "每页数据长度",required = true,defaultValue = "10"),
+            @ApiImplicitParam(name = "name",value = "设置名称",required = false)
+    })  //knife4j注解，用于对接口参数进行说明
     @GetMapping("page")
     public R<Page> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
                         @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
@@ -63,6 +74,8 @@ public class SettingController {
      * @param setting
      * @return
      */
+    @ApiOperation(value = "新增设置接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "setting",value = "新增的设置参数",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("save")
     public R<String> addSave(@RequestBody Setting setting) {
         try {
@@ -86,6 +99,8 @@ public class SettingController {
      * @param ids
      * @return
      */
+    @ApiOperation(value = "删除后台用户接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "ids",value = "选中的设置id集合",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("delete")
     public R<String> delete(@RequestParam("ids") List<Long> ids) {
         try {
@@ -114,6 +129,8 @@ public class SettingController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "根据id查询单条数据接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "选中的设置id",required = true)})  //knife4j注解，用于对接口参数进行说明
     @GetMapping("/findById")
     public R<Setting> findById(@RequestParam("id") Long id) {
         //01.数据回显
@@ -131,8 +148,10 @@ public class SettingController {
      * 保存修改后数据的方法
      * @return
      */
+    @ApiOperation(value = "修改设置接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "setting",value = "修改的设置",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PutMapping("edit")
-    public R<String> edit(@RequestBody Setting setting){
+    public R<String> update(@RequestBody Setting setting){
         try {
             //调用业务层的方法进行数据插入
             Boolean update = this.settingService.update(setting);

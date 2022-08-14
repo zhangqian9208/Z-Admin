@@ -2,13 +2,17 @@ package com.template.back.common.mapper.system;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.template.back.common.pojo.system.Module;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 /**
- * 模块映射接口
+ * @author 张骞
+ * @version 1.0
+ * 功能模块mapper
  */
+@Mapper
 public interface ModuleMapper extends BaseMapper<Module> {
     /**
      * 根据用户id，查询对应的模块，需要通过中间表查询

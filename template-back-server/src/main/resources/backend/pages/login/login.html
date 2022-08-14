@@ -33,7 +33,7 @@
 
         <!-- 顶部LOGO部分end -->
         <!-- 登录中间部分 -->
-        <div class="login-box" style="margin: top 47.934px;">
+        <div class="login-box">
             <h1>登 录</h1>
             <h2>请先登录以管理后台数据</h2>
             <el-form :model="member" :rules="loginRules" ref="ruleForm" label-width="100px" id="ruleForm">
@@ -110,7 +110,7 @@
                     let res = await loginApi(this.member)
                     if (String(res.code) === '1') {
                         localStorage.setItem('userInfo', JSON.stringify(res.data))
-                        window.location.href = '/backend/index_tabs.html'
+                        window.location.href = '/backend/index.html'
                     } else {
                         this.$message.error(res.msg)
                         this.loading = false

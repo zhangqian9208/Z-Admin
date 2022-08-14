@@ -15,6 +15,10 @@ import com.template.back.server.service.system.AdminService;
 import com.template.back.server.service.system.DeptService;
 import com.template.back.server.service.system.ModuleService;
 import com.template.back.server.service.system.RoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,7 @@ import java.util.Map;
  * @version 1.0.0
  * 管理员控制层代码
  */
+@Api(tags = "后台用户相关接口")  //knife4j注解，用于自动生成api文档
 @RestController  //注解为restful风格controller
 @RequestMapping("system/user")
 @Slf4j
@@ -56,6 +61,10 @@ public class AdminController {
      *
      * @return 返回页面重定向地址
      */
+    @ApiOperation(value = "后台用户登录接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "map",value = "用户信息 userName-用户名 password-密码",required = true)
+    })  //knife4j注解，用于对接口参数进行说明
     @NoAuthorization  //不需要验证登录
     @PostMapping("/login")
     public R<Admin> login(@RequestBody Map<String, String> map, HttpServletRequest req) {
@@ -100,6 +109,9 @@ public class AdminController {
      *
      * @return
      */
+    @ApiOperation(value = "加载用户权限菜单接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({
+    })  //knife4j注解，用于对接口参数进行说明
     @PostMapping("author")
     public R<List<Module>> queryAuthor(HttpServletRequest request) {
         //01.获取当前登录的用户信息
@@ -132,6 +144,9 @@ public class AdminController {
      * @param req
      * @return
      */
+    @ApiOperation(value = "后台用户退出接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({
+    })  //knife4j注解，用于对接口参数进行说明
     @PostMapping("logout")
     public R<String> logout(HttpServletRequest req) {
         //删除请求域的数据
@@ -149,6 +164,12 @@ public class AdminController {
      * @param name     查询的条件
      * @return
      */
+    @ApiOperation(value = "查询后台用户列表接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "当前页码",required = true,defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize",value = "每页数据长度",required = true,defaultValue = "10"),
+            @ApiImplicitParam(name = "name",value = "根据用户姓名查询",required = false)
+    })  //knife4j注解，用于对接口参数进行说明
     @GetMapping("page")
     public R<Page> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -176,8 +197,10 @@ public class AdminController {
      * @param admin
      * @return
      */
+    @ApiOperation(value = "新增后台用户接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "admin",value = "新增的后台用户",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("save")
-    public R<String> insert(@RequestBody Admin admin) {
+    public R<String> addSave(@RequestBody Admin admin) {
         try {
             //1.这里需要验证用户名唯一,根据用户名查询数据
             Admin login = this.adminService.login(admin.getUserName());
@@ -213,6 +236,8 @@ public class AdminController {
      * @param ids
      * @return
      */
+    @ApiOperation(value = "删除后台用户接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "ids",value = "选中的课程id集合",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("delete")
     public R<String> delete(@RequestParam("ids") List<Long> ids) {
         try {
@@ -235,14 +260,7 @@ public class AdminController {
         return R.error("数据删除失败！");
     }
 
-    /**
-     * 获取当前登录用户信息的方法
-     *
-     * @return 返回当前登录的用户对象
-     */
-    public Admin getAdmin() {
-        return AdminThreadLocal.get();
-    }
+
 
     /**
      * 根据id查询单个的方法
@@ -250,6 +268,8 @@ public class AdminController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "根据id查询单条数据接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "选中的用户id",required = true)})  //knife4j注解，用于对接口参数进行说明
     @GetMapping("/findById")
     public R<Admin> findById(@RequestParam("id") Long id) {
         //01.数据回显
@@ -269,8 +289,10 @@ public class AdminController {
      *
      * @return
      */
+    @ApiOperation(value = "修改后台用户接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "admin",value = "修改的后台用户",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PutMapping("edit")
-    public R<String> edit(@RequestBody Admin admin) {
+    public R<String> update(@RequestBody Admin admin) {
         try {
             //调用业务层的方法进行数据插入
             Boolean update = this.adminService.update(admin);
@@ -291,6 +313,8 @@ public class AdminController {
      *
      * @return
      */
+    @ApiOperation(value = "根据用户查询角色接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "后台用户id",required = true)})  //knife4j注解，用于对接口参数进行说明
     @GetMapping("userRoleList")
     public R<List<Role>> userRoleList(@RequestParam("id") Long id) {
         //数据回显
@@ -307,12 +331,23 @@ public class AdminController {
      *
      * @return
      */
+    @ApiOperation(value = "根据用户查询角色接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "map",value = "adminId-后台用户id roles-选中的角色集合",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("/updateRole")
     public R<String> updateRole(@RequestBody Map map) {
         //调取业务层的方法
         roleService.updateRole(map);
         //跳转页面
         return R.success("用户授权成功！");
+    }
+
+    /**
+     * 获取当前登录用户信息的方法
+     *
+     * @return 返回当前登录的用户对象
+     */
+    public Admin getAdmin() {
+        return AdminThreadLocal.get();
     }
 
 }

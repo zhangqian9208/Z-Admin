@@ -1,9 +1,13 @@
 package com.template.back.server.service.school.Impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.template.back.common.mapper.school.CampusMapper;
 import com.template.back.common.pojo.school.Campus;
 import com.template.back.common.pojo.system.Admin;
@@ -12,13 +16,17 @@ import com.template.back.server.service.school.CampusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 /**
  * @author 张骞
  * @version 1.0.1
  * 校区管理业务层
  */
 @Service  //注解为spring管理的业务层
-public class CampusServiceImpl implements CampusService {
+public class CampusServiceImpl extends ServiceImpl<CampusMapper,Campus> implements CampusService {
     //注入mapper接口
     @Autowired
     private CampusMapper campusMapper;
@@ -27,43 +35,46 @@ public class CampusServiceImpl implements CampusService {
      * 分页查询的方法
      * @param page  当前页码，默认1
      * @param pageSize  当前页码，默认12
-     * @return 返回自定义的分页VO数据
+     * @param campusName 根据校区名称查询条件
+     * @param address  根据校区地址查询条件
+     * @param startData  根据开始日期查询条件
+     * @param endData  根据结束日期查询条件
+     * @return  返回自定义的分页VO数据
      */
     @Override
-    public Page findPage(Integer page, Integer pageSize) {
+    public Page findPage(Integer page, Integer pageSize,String campusName,String address, String startData, String endData) {
         //01.配置MP的查询条件，根据时间排序
-        QueryWrapper<Campus> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("created");
+        LambdaQueryWrapper<Campus> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc(Campus::getCreated);
+
+        //1.1根据校区名称查询
+        if(StrUtil.isNotEmpty(campusName)){
+            queryWrapper.like(Campus::getName,campusName);
+        }
+
+        //2.4构造根据起止日期开始查询的条件，日期需要转换格式
+        if (StrUtil.isAllNotEmpty(startData, endData)) {
+            LocalDate startDate = LocalDate.parse(startData, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate endDate = LocalDate.parse(endData, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            queryWrapper.ge(Campus::getCoopTime,startDate);
+            queryWrapper.le(Campus::getCoopTime,endDate);
+        }
+
         //02.配置分页数据
-        Page<Campus> campusPage = new Page<>(page, pageSize);
+        Page<Campus> pageCampus = new Page<>(page,pageSize);
+
         //03.查询数据
-        IPage<Campus> campusIPage = this.campusMapper.selectPage(campusPage, queryWrapper);
-        //04.封装分页数据并返回
-        return campusPage;
+        IPage<Campus> campusIPage = this.campusMapper.selectPage(pageCampus, queryWrapper);
+
+        //04.获取数据
+        List<Campus> campusList = campusIPage.getRecords();
+
+
+        //06.封装分页数据返回
+        pageCampus.setRecords(campusList);
+        return pageCampus;
     }
 
-    /**
-     * 新增数据的方法
-     * @param campus
-     * @return
-     */
-    @Override
-    public Boolean insert(Campus campus) {
-        //对数据进行非空验证的方法
-        Boolean aBoolean = this.dataValidation(campus);
-        if(aBoolean){
-            //01.生成UUID(注解自动生成)
-            //campus.setCampusId(UUID.randomUUID().toString());
-            //02.获取当前操作的用户信息
-            Admin admin = AdminThreadLocal.get();
-            //03.更改当前数据的修改人信息
-            campus.setOperator(admin.getName());
-            //04.保存数据
-            int insert = this.campusMapper.insert(campus);
-            return insert == 1;
-        }
-        return false;
-    }
 
     /**
      * 根据id删除数据的方法

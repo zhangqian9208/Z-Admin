@@ -1,6 +1,7 @@
 package com.template.back.server.service.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.template.back.common.pojo.system.Admin;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @version
  * 用户业务层封装类
  */
-public interface AdminService {
+public interface AdminService extends IService<Admin> {
     /**
      * 后台用户登录的校验方法
      * @param username 提交的用户名

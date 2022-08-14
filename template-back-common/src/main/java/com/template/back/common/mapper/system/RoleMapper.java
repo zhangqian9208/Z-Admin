@@ -6,14 +6,18 @@ import com.template.back.common.pojo.system.Role;
 import com.template.back.common.vo.TreeVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 角色映射接口
+ * @author 张骞
+ * @version 1.0
+ * 角色mapper
  */
+@Mapper
 public interface RoleMapper extends BaseMapper<Role> {
     /**
      * 根据角色查询已经授权的模块

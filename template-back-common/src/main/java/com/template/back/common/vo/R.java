@@ -1,7 +1,10 @@
 package com.template.back.common.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,12 +15,20 @@ import java.util.Map;
  *   A. 如果业务执行结果为成功, 构建R对象时, 只需要调用 success 方法; 如果需要返回数据传递 object 参数, 如果无需返回, 可以直接传递null。
  *   B. 如果业务执行结果为失败, 构建R对象时, 只需要调用error 方法, 传递错误提示信息即可。
  */
+@ApiModel("web请求返回")  //swagger类注解
 @Data  //注解生成get/set方法
-public class R<T> {
+public class R<T> implements Serializable {
     //返回结果集的成员变量
+    @ApiModelProperty("响应编码，1-成功，0或者其他数字-失败")
     private Integer code;  //相应编码，1-成功，0或者其他数字-失败
+
+    @ApiModelProperty("错误信息")
     private String msg;  //错误信息
+
+    @ApiModelProperty("响应数据")
     private T data;  //数据
+
+    @ApiModelProperty("响应动态数据")
     private Map map = new HashMap();  //相应的动态数据
 
     /**

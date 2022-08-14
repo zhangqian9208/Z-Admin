@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.template.back.common.mapper.system.RoleMapper;
 import com.template.back.common.pojo.system.Admin;
 import com.template.back.common.pojo.system.Role;
@@ -26,7 +27,7 @@ import java.util.*;
  */
 @Service  //标记为SpringBoot管理的业务层
 @Slf4j  //日志注解
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper,Role> implements RoleService {
     //注入mapper
     @Autowired
     private RoleMapper roleMapper;
@@ -65,9 +66,7 @@ public class RoleServiceImpl implements RoleService {
         if(ObjectUtil.isAllNotEmpty(role.getName())){
             //01.获取当前操作的用户信息
             Admin admin = AdminThreadLocal.get();
-            //02.更改当前数据的修改人信息
-            role.setOperator(admin.getName());
-            //03.保存数据
+            //02.保存数据
             int insert = this.roleMapper.insert(role);
             return insert == 1;
         }

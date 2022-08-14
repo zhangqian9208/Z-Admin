@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.template.back.common.mapper.system.AdminMapper;
 import com.template.back.common.mapper.system.DeptMapper;
 import com.template.back.common.mapper.system.RoleMapper;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 @Service //业务层注解
 @Slf4j   //控制台日志注解
-public class AdminServiceImpl implements AdminService {
+public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements AdminService {
     //TODO 管理员用户密码的保存，没有进行加密，若考虑安全问题，可以使用MD5加密
     //注入自定义日志业务层
     @Autowired
@@ -191,9 +192,7 @@ public class AdminServiceImpl implements AdminService {
         if (ObjectUtil.isAllNotEmpty(admin.getName(), admin.getUserName(), admin.getPassword(), admin.getState())) {
             //01.获取当前操作的用户信息
             Admin adminInfo = AdminThreadLocal.get();
-            //02.更改当前数据的修改人信息
-            admin.setOperator(adminInfo.getName());
-            //03.保存数据
+            //02.保存数据
             int insert = this.adminMapper.insert(admin);
             return insert == 1;
         }

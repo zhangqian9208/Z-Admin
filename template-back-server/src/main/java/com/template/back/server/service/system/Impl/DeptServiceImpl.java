@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.template.back.common.mapper.system.DeptMapper;
 import com.template.back.common.pojo.system.Admin;
 import com.template.back.common.pojo.system.Dept;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @Service   //注解标注为Spring的业务层
 @Slf4j     //日志注解
-public class DeptServiceImpl implements DeptService {
+public class DeptServiceImpl extends ServiceImpl<DeptMapper,Dept> implements DeptService {
     //注入自定义日志业务层
     @Autowired
     private LoggerService loggerService;
@@ -64,9 +65,7 @@ public class DeptServiceImpl implements DeptService {
     public Boolean insert(Dept dept){
         //01.获取当前操作的用户信息
         Admin admin = AdminThreadLocal.get();
-        //02.更改当前数据的修改人信息
-        dept.setOperator(admin.getName());
-        //03.保存数据
+        //02.保存数据
         int insert = this.deptMapper.insert(dept);
         return insert == 1;
     }

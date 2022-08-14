@@ -11,6 +11,10 @@ import com.template.back.common.vo.TreeVo;
 import com.template.back.server.service.system.AdminService;
 import com.template.back.server.service.system.ModuleService;
 import com.template.back.server.service.system.RoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,6 +29,7 @@ import java.util.Map;
  * 角色管理控制层程序
  * 更新日志：前端更换为html页面，使用json格式数据进行交互，后端进行对应更改
  */
+@Api(tags = "角色相关接口")  //knife4j注解，用于自动生成api文档
 @RestController   //标记为控制层
 @RequestMapping("/system/role")   //定义请求映射路径
 @Slf4j   //注解日志
@@ -52,6 +57,12 @@ public class RoleController {
      * @param name  //前端传入的查询条件
      * @return
      */
+    @ApiOperation(value = "查询角色列表接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "当前页码",required = true,defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize",value = "每页数据长度",required = true,defaultValue = "10"),
+            @ApiImplicitParam(name = "name",value = "角色名称",required = false)
+    })  //knife4j注解，用于对接口参数进行说明
     @GetMapping("page")
     public R<Page> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
                         @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
@@ -78,6 +89,8 @@ public class RoleController {
      * @param role
      * @return
      */
+    @ApiOperation(value = "新增角色接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "role",value = "新增的角色",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("save")
     public R<String> addSave(@RequestBody Role role) {
         try {
@@ -101,6 +114,8 @@ public class RoleController {
      * @param ids
      * @return
      */
+    @ApiOperation(value = "删除后台用户接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "ids",value = "选中的角色id集合",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PostMapping("delete")
     public R<String> delete(@RequestParam("ids") List<Long> ids) {
         try {
@@ -138,6 +153,8 @@ public class RoleController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "根据id查询单条数据接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "选中的角色id",required = true)})  //knife4j注解，用于对接口参数进行说明
     @GetMapping("/findById")
     public R<Role> findById(@RequestParam("id") Long id) {
         //01.数据回显
@@ -156,6 +173,8 @@ public class RoleController {
      * 保存修改后数据的方法
      * @return
      */
+    @ApiOperation(value = "修改角色接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "role",value = "修改的角色",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PutMapping("edit")
     public R<String> edit(@RequestBody Role role) {
         try {
@@ -180,6 +199,8 @@ public class RoleController {
      *
      * @return
      */
+    @ApiOperation(value = "查询角色授权接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "选中的角色id",required = true)})  //knife4j注解，用于对接口参数进行说明
     @GetMapping("author")
     public R<Map> author(@RequestParam("id") Long roleId) {
         try {
@@ -205,6 +226,8 @@ public class RoleController {
      * 保存授权数据
      * @return
      */
+    @ApiOperation(value = "保存角色授权接口")  //knife4j注解，用于对接口方法进行说明
+    @ApiImplicitParams({@ApiImplicitParam(name = "map",value = "st-选中的角色id checkedArray-选中的模块集合",required = true)})  //knife4j注解，用于对接口参数进行说明
     @PutMapping("updateRoleModule")
     public R<String> updateRoleModule(@RequestBody Map map) {
         //解析前台传入的数据

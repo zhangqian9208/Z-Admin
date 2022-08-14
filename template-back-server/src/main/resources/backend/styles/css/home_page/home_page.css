@@ -1,0 +1,83 @@
+* {
+	margin: 0px;
+}
+
+canvas {
+	display: block;
+}
+/* 顶部四个色块的样式 */
+.user-info-wrapper .bottom-wrapper .item-wapper.buy-course {
+    background-image: linear-gradient( 123deg ,#6bc0ff 0,#3a8cf6 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(0 177 255 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(0 177 255 / 60%);
+}
+.user-info-wrapper .bottom-wrapper .item-wapper.course-complate {
+    background-image: linear-gradient( 123deg ,#acf057 0,#88d838 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(182 247 43 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(182 247 43 / 60%);
+    margin-left: 40px;
+}
+.user-info-wrapper .bottom-wrapper .item-wapper.week-study {
+    background-image: linear-gradient( 123deg ,#ffc443 0,#ff8a28 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(252 178 70 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(252 178 70 / 60%);
+    margin-left: 40px;
+}
+.user-info-wrapper .bottom-wrapper .item-wapper.beyond-partter {
+    background-image: linear-gradient( 123deg ,#ff6b7d 0,#ff4c55 100%);
+    -webkit-box-shadow: 4px 8px 38px 0 rgb(255 76 85 / 60%);
+    box-shadow: 4px 8px 38px 0 rgb(255 76 85 / 60%);
+    margin-left: 40px;
+}
+/* 顶部四个色块关联的其他样式 */
+.user-info-wrapper .bottom-wrapper {
+    padding: 40px 20px 40px 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.user-info-wrapper .bottom-wrapper {
+    padding: 40px 20px 40px 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.user-info-wrapper .bottom-wrapper .item-wapper {
+    width: 242px;
+    height: 105px;
+    border-radius: 8px;
+    padding: 20px 22px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+.user-info-wrapper .bottom-wrapper .item-wapper .info .text {
+    font-family: PingFangSC-Regular;
+    font-size: 33px;
+    color: #fff;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-top: 20px;
+	margin-left: 10px;
+}
+.user-info-wrapper .bottom-wrapper .item-wapper .info p {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-top: 11px;
+	margin-left: 10px;
+    font-weight: 100;
+}
+/* 图片大小 */
+.user-info-wrapper .bottom-wrapper .item-wapper .img img {
+    width: 80px;
+    height: 80px;
+}
+
+

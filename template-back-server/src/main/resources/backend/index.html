@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- 浏览器title -->
-    <title>张骞|后台管理系统</title>
+    <title>Z-Admin|后台管理系统</title>
     <!-- 自定义图标 -->
     <link rel="shortcut icon" href="images/cloud_logo_2.png" />
     <!-- 引入vue开发环境 -->
@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="plugins/element-ui/lib/theme-chalk/index.css">
     <!-- 自定义css样式 -->
     <link href="styles/css/index.css" rel="stylesheet" type="text/css">
+
     <!-- css样式,样式和本页相关，没有抽出 -->
     <style>
         /* 左侧菜单进度条样式1 */
@@ -180,7 +181,7 @@
                         <span class="el-dropdown-link" id="name">
                             <i class="el-icon-user-solid" id="user"></i>
                             <!-- 这里动态显示登录用户名 -->
-                            {{ userInfo.name }},您好<i class="el-icon-arrow-down el-icon--right"></i>
+                            {{ userInfo.name }}<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <!-- 用户登录鼠标划过弹出按钮 -->
                         <el-dropdown-menu slot="dropdown">
@@ -204,8 +205,8 @@
                     <!-- 主区域部分Iframe模块start -->
                     <el-main style="padding:0px;" scrollbar="yes">
                         <!-- 可关闭标签选项卡start -->
-                        <el-tabs v-model="tabindex" type="card" @tab-remove="removetabs" @tab-click="clicktabs" closable
-                            text-align='middle'>
+                        <el-tabs v-model="tabindex" type="card" @tab-remove="removetabs" @tab-click="clicktabs"
+                            :closable="closable" text-align='middle'>
                             <el-tab-pane v-for="(item, index) in tabvals" :label="item.title" :name="item.name"
                                 width="100%">
                                 <!-- 正文iframe嵌套div start -->
@@ -238,16 +239,17 @@
                 <!-- 主区域部分end -->
 
             </el-container>
+        </el-container>
             <!-- 页面整体容器end -->
 
             <!--弹窗部分start-->
 
             <!--修改密码弹窗start-->
-            <el-dialog title="方未云账户密码修改" :visible.sync="dialogVisiblePassword" width="40%" :before-close="handleClose">
+            <el-dialog title="账户密码修改" :visible.sync="dialogVisiblePassword" width="40%" :before-close="handleClose">
                 <!-- 当前登录用户名提示，不允许修改 -->
                 <span id="userInfo">
                     <strong>当前登录账户：</strong>{{ userInfo.name }}
-                    <span>（用户名请联系方未工作人员更改）</span>
+                    <span>（用户名请联系主管理员更改）</span>
                 </span>
                 <!-- 密码提交表单start -->
                 <el-form :model="password" :rules="rules" ref="ruleForm" label-width="80px" style="margin-top: 25px;">
@@ -274,7 +276,8 @@
             <!--修改密码弹窗end-->
 
             <!--新增修改公用弹窗start ：弹窗宽度和弹窗高度可以从子页面传输-->
-            <el-dialog :title=dislogName :visible.sync="dialogVisible" :width=big :before-close="handleClose">
+            <el-dialog :title=dislogName :visible.sync="dialogVisible" :width=big :before-close="handleClose"
+                       :close-on-click-modal="false" :close-on-press-escape="false">
                 <iframe :src="dialogUrl" width=100% :height=height frameborder="0" id="iframeUpdate"></iframe>
             </el-dialog>
             <!--新增修改公用弹窗end-->
@@ -298,16 +301,18 @@
             //数据集合
             data() {
                 return {
+                    //标签页是否可以关闭的值
+                    closable: false,
                     // 顶部菜单指使默认值
-                    headTitle: '系统日志管理',
+                    headTitle: '首页',
                     // 默认打开的页面（iframe）
-                    iframeUrl: 'pages/system/logger/list.html',
+                    iframeUrl: 'pages/home/home_page.html',
                     // 默认打开的页面（tabs首页，需要和iframeUrl一致）
-                    tabindex: 'pages/system/logger/list.html',
+                    tabindex: 'pages/home/home_page.html',
                     // tabs标签页使用
-                    tabvals: [{ title: '系统运行日志', name: 'pages/system/logger/list.html', value: '' }],
+                    tabvals: [{ title: '首页', name: 'pages/home/home_page.html', value: '', closable: false }],
                     //页面底部版权信息，具体内容在这里修改
-                    pageInfo: '©2022-方未云后台管理系统-方未教育技术支持中心',
+                    pageInfo: 'Copyright © 2022 Z-Admin-轻量化后台管理系统',
                     // 当前菜单默认收起状态
                     isopen: false,
                     // 收起菜单图标的默认状态
@@ -339,127 +344,7 @@
                     // 标签页使用
                     active: '',
                     // 菜单动态数据，可以后台传入进行菜单权限控制
-                    menus: [
-                        {
-                            id: 1, name: '系统功能管理', parentId: null, url: '', icon: 'el-icon-s-tools', children: [
-                                {
-                                    id: 1,
-                                    name: '部门管理',
-                                    parentId: 1,
-                                    icon: 'el-icon-tickets',
-                                    curl: 'pages/system/dept/list.html',
-                                    children: [{
-                                        "created": null,
-                                        "updated": null,
-                                        "operator": null,
-                                        "id": "10",
-                                        "parentId": "9",
-                                        "name": "部门新增按钮",
-                                        "ctype": "2",
-                                        "state": "1",
-                                        "curl": "add1",
-                                        "remark": "",
-                                        "icon": "add",
-                                        "module": null,
-                                        "version": null,
-                                        "children": null
-                                    }, {
-                                        "created": null,
-                                        "updated": null,
-                                        "operator": null,
-                                        "id": "11",
-                                        "parentId": "9",
-                                        "name": "部门删除按钮",
-                                        "ctype": "2",
-                                        "state": "1",
-                                        "curl": "del",
-                                        "remark": "",
-                                        "icon": "del",
-                                        "module": null,
-                                        "version": null,
-                                        "children": null
-                                    }, {
-                                        "created": null,
-                                        "updated": null,
-                                        "operator": null,
-                                        "id": "12",
-                                        "parentId": "9",
-                                        "name": "部门修改按钮",
-                                        "ctype": "2",
-                                        "state": "1",
-                                        "curl": "updata",
-                                        "remark": "",
-                                        "icon": "updata",
-                                        "module": null,
-                                        "version": null,
-                                        "children": null
-                                    }]
-                                },
-                                {
-                                    id: 2,
-                                    name: '用户管理',
-                                    pid: 1,
-                                    icon: 'el-icon-user',
-                                    curl: 'pages/system/admin/list.html'
-                                },
-                                {
-                                    id: 3,
-                                    name: '角色管理',
-                                    pid: 1,
-                                    icon: 'el-icon-coordinate',
-                                    curl: 'pages/system/role/list.html'
-                                },
-                                {
-                                    id: 4,
-                                    name: '模块管理',
-                                    pid: 1,
-                                    icon: 'el-icon-box',
-                                    curl: 'pages/system/module/list.html'
-                                },
-                                {
-                                    id: 5,
-                                    name: '参数设置',
-                                    pid: 1,
-                                    icon: 'el-icon-setting',
-                                    curl: 'pages/system/setting/list.html'
-                                },
-                                {
-                                    id: 6,
-                                    name: '系统运行日志',
-                                    pid: 1,
-                                    icon: 'el-icon-printer',
-                                    curl: 'pages/system/logger/list.html'
-                                }
-                            ]
-                        },
-                        {
-                            id: 2, name: '校区会员管理', pid: null, url: '8', icon: 'el-icon-s-order', children: [
-                                {
-                                    id: 21,
-                                    name: '校区管理',
-                                    pid: 2,
-                                    icon: 'el-icon-school',
-                                    curl: '6'
-                                },
-                                {
-                                    id: 22,
-                                    name: '会员管理',
-                                    pid: 2,
-                                    icon: 'el-icon-user',
-                                    curl: '7'
-                                },
-                                {
-                                    index: 23,
-                                    id: 23,
-                                    name: '在线状态',
-                                    pid: 2,
-                                    icon: 'el-icon-monitor',
-                                    curl: '8'
-                                }
-                            ]
-                        }
-
-                    ],
+                    menus: [{ id: 1, name: '菜单正在加载中' }],
                     // 获取屏幕高度
                     screenHeight: document.documentElement.clientHeight + "px",
                     // 获取iframe页面高度
@@ -546,6 +431,8 @@
                         // 为权限集合赋值
                         this.buttomList = isok[0].buttom;
                     }
+                    //为关闭按钮赋值
+                    this.closable = true;
                 },
                 //点击顶部标签页被点击的方法
                 clicktabs(tab) {
@@ -558,10 +445,16 @@
                     // 为权限赋值:因为上面tabvals的属性buttom无法赋值给tab，这里再次从集合中取值
                     let isok = this.tabvals.filter(tabNew => tabNew.name == tab.name);
                     this.buttomList = isok[0].buttom;
+                    //为关闭按钮赋值
+                    if (tab.name != 'pages/home/home_page.html') {
+                        this.closable = true
+                    } else {
+                        this.closable = false
+                    }
                 },
                 //关闭标签页的方法
                 removetabs(tabname) {
-                    if (tabname != 'home') {
+                    if (tabname != 'pages/home/home_page.html') {
                         let index = this.tabvals.findIndex(tab => tab.name == tabname);
                         this.tabvals.splice(index, 1)
                         //刷新标签页
@@ -569,6 +462,12 @@
                         this.iframeUrl = this.tabvals[index - 1].name
                         // 为权限赋值
                         this.buttomList = this.tabvals[index - 1].buttom;
+                        //为关闭按钮赋值
+                        if (this.tabvals[index - 1].name != 'pages/home/home_page.html') {
+                            this.closable = true
+                        } else {
+                            this.closable = false
+                        }
                     }
                 },
                 // 等待加载页面关闭，可以设置显示时间，单位：毫秒
@@ -605,23 +504,22 @@
                                     //let storage = window.localStorage;
                                     //alert("id："+storage.id);
                                     //发送请求，根据当前id去服务器中查找对应的数据
-                                    axios.post('/member/changePassword', this.password).then(function (response) {
-                                        //alert(storage.id);
-                                        //获取响应数据
-                                        let res = response.data;
-                                        //判定根据旧密码是否可以查询到数据
-                                        if (res.data === undefined) {
-                                            //如果没有用户名信息，当第一次输入的密码不正确，给出提示
-                                            _this.passwordTips02();
+                                    changePassword(this.password).then(res => {
+                                        if (String(res.code) === '1') {
+                                            //给出提示
+                                            parent.index.$message.success(res.data)
+                                            //强制退出，重新登录(为了提示，进行延时操作)
+                                            this.timer = null
+                                            this.timer = setTimeout(() => {
+                                                this.logout()
+                                            }, 1000)
                                         } else {
-                                            //如果后台查出相关的数据，修改成功，给出提示，并让用户退出重新登录
-                                            _this.tips('密码修改成功，下次请使用新密码登录！');
-                                            //关闭窗口
-                                            _this.dialogVisiblePassword = false;
+                                            this.$message.error(res.msg)
                                         }
-                                    }).catch(function (err) {
-                                        console.log(err)
+                                    }).catch(err => {
+                                        this.$message.error("请求异常！")
                                     })
+
                                 } else {
                                     //如果两次输入的密码不一致，给出提示
                                     this.tips('两次新密码输入不一致！');
@@ -677,10 +575,13 @@
                 if (userInfo) {
                     this.userInfo = JSON.parse(userInfo)
                     //获取当前用户权限下的菜单
-
                 }
                 // 关闭等加载页面
                 this.closeLoading()
+                //延时加载css页面效果
+                this.timer = setTimeout(() => {
+                    document.getElementById('iframeWindow').contentWindow.location.reload(true)
+                }, 300)
             },
             //钩子函数：页面销毁前执行
             beforeDestroy() {

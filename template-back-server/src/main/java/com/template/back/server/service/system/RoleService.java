@@ -1,6 +1,7 @@
 package com.template.back.server.service.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.template.back.common.pojo.system.Role;
 import com.template.back.common.vo.TreeVo;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 /**
  * 角色管理业务层约束接口
  */
-public interface RoleService {
+public interface RoleService extends IService<Role> {
 
     /**
      * 分页查询
