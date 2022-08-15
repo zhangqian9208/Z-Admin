@@ -42,7 +42,8 @@ SpringBoot后台管理系统模板，前后端不分离的轻量级后台管理�
 - 运行项目
   - 通过Java应用方式运行admin模块下的com.linln.admin.BootApplication文件
   - 数据库配置：根据sql语句建立数据库，修改配置中的数据库连接地址即可
-  - 访问地址：http://localhost:18078/backend/index_tabs.html
+  - 本地访问地址：http://localhost:18078
+  - 线上演示地址：http://58.56.31.21:5621/
   - 默认帐号密码：zhangqian/123
 
 
