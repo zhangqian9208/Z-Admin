@@ -1,13 +1,13 @@
 # Z-Admin后台管理轻量级项目模板V0.3
 
-#### 更新日志
-v0.3 将删除修改为逻辑删除，优化了自动填充更新人字段方法，缓存方案更改为Spring Cache，集成Knife4j框架
-v0.2 将spring boot版本更新到2.4.5,mybatis plus版本更新到3.4.5
-v0.1 第一版本提交
-
 #### 演示地址
   - 线上演示地址：http://z-admin.findawayedu.com:5621/
   - 线上文档地址：http://z-admin.findawayedu.com:5621/doc.html
+
+#### 更新日志
+  - v0.3 将删除修改为逻辑删除，优化了自动填充更新人字段方法，缓存方案更改为Spring Cache，集成Knife4j框架
+  - v0.2 将spring boot版本更新到2.4.5,mybatis plus版本更新到3.4.5
+  - v0.1 第一版本提交
 
 #### 交流QQ群
 QQ群：867492532
