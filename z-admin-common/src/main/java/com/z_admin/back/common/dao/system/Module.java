@@ -2,6 +2,7 @@ package com.z_admin.back.common.dao.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.z_admin.back.common.dao.DataTree;
 import com.z_admin.back.common.dao.BasePojo;
 import io.swagger.annotations.ApiModel;
@@ -64,4 +65,8 @@ public class Module extends BasePojo implements DataTree<Module> {
     @ApiModelProperty("子模块")
     @TableField(exist= false)
     private List<Module> children;
+
+    @ApiModelProperty("逻辑删除字段")
+    @TableLogic
+    private Integer deleted;
 }

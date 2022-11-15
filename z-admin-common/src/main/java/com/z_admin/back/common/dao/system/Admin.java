@@ -2,6 +2,7 @@ package com.z_admin.back.common.dao.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.z_admin.back.common.dao.BasePojo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -49,4 +50,8 @@ public class Admin extends BasePojo implements Serializable {
     @ApiModelProperty("关联的部门类型")
     @TableField(exist = false)  //该字段在数据库中不存在
     private Dept dept;
+
+    @ApiModelProperty("逻辑删除字段")
+    @TableLogic
+    private Integer deleted;
 }

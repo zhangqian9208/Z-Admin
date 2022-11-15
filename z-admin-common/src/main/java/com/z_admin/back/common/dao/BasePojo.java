@@ -45,7 +45,5 @@ public abstract class BasePojo {
     @Version
     private Integer version;
 
-    @ApiModelProperty("逻辑删除字段")
-    @TableLogic
-    private Integer deleted;
+
 }

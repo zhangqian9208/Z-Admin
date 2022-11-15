@@ -1,6 +1,7 @@
 package com.z_admin.back.common.dao.system;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.z_admin.back.common.dao.BasePojo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,4 +36,8 @@ public class Dept extends BasePojo implements Serializable {
     @ApiModelProperty("备注")
     private String remark;   //备注
 
+
+    @ApiModelProperty("逻辑删除字段")
+    @TableLogic
+    private Integer deleted;
 }
