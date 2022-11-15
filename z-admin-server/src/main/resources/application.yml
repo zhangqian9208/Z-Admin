@@ -35,11 +35,10 @@ spring:
     # 开发环境数据库地址
     url: jdbc:mysql://192.168.80.105:3306/z_admin_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: z_admin_test
-    password: JmxGZM2PeZtxTeia
+    password: 123
   # redis配置
   redis:
     # 单节点-主机地址
-    # host: 182.45.183.186
     host: 127.0.0.1  # 生产环境
     database: 0 # redis数据库索引
     port: 6379 # 单节点-端口
