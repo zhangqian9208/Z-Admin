@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--父工程信息-->
-    <groupId>com.template</groupId>
-    <artifactId>Template-back</artifactId>
+    <groupId>com.z_admin</groupId>
+    <artifactId>Z-Admin</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>template-back-common</module>
-        <module>template-back-server</module>
+        <module>z-admin-common</module>
+        <module>z-admin-server</module>
     </modules>
 
     <!--spring信息-->

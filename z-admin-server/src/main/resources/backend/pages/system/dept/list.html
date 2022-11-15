@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入Element必要的依赖文件 -->
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="stylesheet" href="../../../plugins/element-ui/lib/theme-chalk/index.css">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../../plugins/vue/vue.js"></script>
+    <script src="../../../plugins/axios/axios-0.18.0.js" type="text/javascript"></script>
+    <!-- 引入组件库js -->
+    <script src="../../../plugins/element-ui/lib/index.js"></script>
+    <!-- 引入自定义js插件 -->
+    <script src="../../../api/system/dept.js"></script>
+    <script src="../../../js/request.js"></script>
+
+<body>
+    <!-- div关联Vue依赖 -->
+    <div id="div">
+        <!-- 表格按钮及搜索区域start -->
+        <div style="margin-top: 10px;">
+            <!-- 按钮部分 -->
+            <el-button-group>
+                <!-- 刷新按钮 -->
+                <el-button type="primary" icon="el-icon-refresh" size="medium" @click="reload()">刷新
+                </el-button>
+                <!-- 新增按钮 -->
+                <el-button type="primary" icon="el-icon-circle-plus-outline" size="medium" @click="addDislog('add')" v-if="add"
+                    > 新增
+                </el-button>
+                <!-- 删除按钮 -->
+                <el-button type="primary" icon="el-icon-delete" size="medium" @click="deleteHandle('批量', null)" v-if="del">删除
+                </el-button>
+            </el-button-group>
+            <!-- 搜索部分 -->
+            <div style="float: right;">
+                <!-- 根据名称搜索 -->
+                <el-input v-model="input" placeholder="根据部门名称查询" size="small" style="width: 150px;">
+                </el-input>
+                <!-- <el-input v-model="input1" placeholder="根据区域查询" size="small" style="width: 150px;">
+                </el-input> -->
+                <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery()">查询</el-button>
+            </div>
+        </div>
+        <!-- 表格按钮及搜索区域end -->
+
+        <!-- 表格部分start -->
+        <el-row style="margin-top: 12px;">
+            <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"
+                @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="100"></el-table-column>
+                <!-- 部门名称 -->
+                <el-table-column prop="deptName" label="部门名称" width="200">
+                </el-table-column>
+                <!-- 备注 -->
+                <el-table-column prop="remark" label="备注" width="220">
+                </el-table-column>
+                <!-- 最后编辑时间 -->
+                <el-table-column prop="updated" label="最后编辑时间" width="220">
+                </el-table-column>
+                <!-- 编辑人 -->
+                <el-table-column prop="operatorName" label="编辑人" show-overflow-tooltip>
+                </el-table-column>
+                <!-- 操作按钮 -->
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="warning" icon="el-icon-edit-outline"
+                            style="background-color: #FFB800;" @click="addDislog(scope.row.deptId)" v-if="edit">编辑
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-row>
+        <!-- 表格部分end -->
+
+        <!-- 数据总数部分start -->
+        <el-row style="margin-top: 12px;float: left;">
+            <el-tag type="success">&nbsp;<i class="el-icon-info"></i>&nbsp;共{{pages}}页,{{counts}}条数据</el-tag>
+        </el-row>
+        <!-- 数据总数部分end -->
+
+        <!-- 分页器start -->
+        <el-pagination class="pageList" :page-sizes="[10, 20, 30, 40]" :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="counts" :current-page.sync="page"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" style="float:right;margin-top: 10px;">
+        </el-pagination>
+        <!-- 分页器end -->
+    </div>
+</body>
+<script>
+    // Vue核心对象
+    new Vue({
+        el: "#div",
+        // 数据集合
+        data() {
+            return {
+                //根据名称查询的绑定输入框
+                input: '',
+                counts: 0,
+                // 打开时默认的当前页码
+                page: 1,
+                // 打开时默认的每页数据长度
+                pageSize: 10,
+                id: '',
+                status: '',
+                // 页面数据封装的数组
+                tableData: [{daptName:'ceshi'}],
+                //总页数
+                pages: '',
+                //选中的页面数据集合
+                checkList: [],
+            }
+
+        },
+        // 侦听器
+        computed: {},
+        // 钩子函数：页面初始化时被调用
+        created() {
+            //校验按钮的方法
+            this.buttomList()
+            // 加载页面数据的方法
+            this.init()
+            // this.user = JSON.parse(localStorage.getItem('userInfo')).username
+        },
+        mounted: function () {
+            // 公开子页面初始化方法，便于父页面调用
+            window.init = this.init
+            // 公开子页面刷新方法，便于父页面调用
+            window.reload = this.reload
+        },
+        methods: {
+            //刷新页面的方法
+            reload() {
+                this.handleQuery();
+            },
+            //校验按钮的方法
+            buttomList() {
+                //获取父页面按钮集合
+                let buttoms = parent.index.buttomList;
+                console.log(this.buttoms)
+                //循环集合，为按钮状态命中
+                for (let j = 0, len = buttoms.length; j < len; j++) {
+                    //为新增按钮改变状态:这里使用icon作为按钮权限标识
+                    if (buttoms[j].icon === "add") {
+                        this.add = true;
+                        // 为修改按钮改变状态
+                    } else if (buttoms[j].icon === "updata") {
+                        this.edit = true;
+                        // 为删除按钮改变状态
+                    } else if(buttoms[j].icon === "del"){
+                        this.del = true;
+                    }
+                }
+            },
+            //初始化方法，在钩子函数中被调用
+            async init() {
+                const params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    //携带查询条件的方法
+                    deptName: this.input ? this.input : undefined
+                }
+                //请求页面列表的方法
+                await getDeptList(params).then(res => {
+                    if (String(res.code) === '1') {
+                        this.tableData = res.data.records || []
+                        this.counts = res.data.total
+                        this.pages = res.data.pages
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            //分页查询的方法
+            handleQuery() {
+                this.page = 1;
+                this.init();
+            },
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.init()
+            },
+            handleCurrentChange(val) {
+                this.page = val
+                this.init()
+            },
+            //打开新增修改弹窗的方法
+            addDislog(st) {
+                if (st === "add") {
+                    //参数1：弹窗内引用的iframe地址
+                    //参数2：弹窗名字
+                    //参数3：弹窗宽度，根据页面内容定义
+                    //参数4：弹窗高度
+                    parent.index.dialog('pages/system/dept/add.html', '新增部门', '50%', '250px');
+                } else {
+                    //参数1：弹窗内引用的iframe地址
+                    //参数2：弹窗名字
+                    //参数3：弹窗宽度，根据页面内容定义
+                    //参数4：弹窗高度
+                    parent.index.dialog('pages/system/dept/add.html?id=' + st, '编辑部门', '50%', '250px');
+                    //刷新修改页面(避免缓存数据导致修改回显失败)
+                    parent.index.updateReload();
+                }
+            },
+            // 删除的方法
+            deleteHandle(type, id) {
+                if (type === '批量' && id === null) {
+                    if (this.checkList.length === 0) {
+                        return parent.index.$message.error('请选择删除对象')
+                    }
+                }
+                //调用父类的弹窗信息
+                parent.index.$confirm('确认删除该部门, 是否继续?', '确定删除', {
+                    'confirmButtonText': '确定',
+                    'cancelButtonText': '取消',
+                }).then(() => {
+                    deleteDept(type === '批量' ? this.checkList.join(',') : id).then(res => {
+                        if (res.code === 1) {
+                            this.$message.success('删除成功！')
+                            this.handleQuery()
+                        } else {
+                            this.$message.error(res.msg || '操作失败')
+                        }
+                    }).catch(err => {
+                        this.$message.error('请求出错了：' + err)
+                    })
+                })
+            },
+            // 勾选全部操作
+            handleSelectionChange(val) {
+                let checkArr = []
+                val.forEach((n) => {
+                    checkArr.push(n.deptId)
+                })
+                this.checkList = checkArr
+            },
+            //根据条件查询的操作
+            handleQuery() {
+                //初始化页面为1
+                this.page = 1;
+                this.init();
+            },
+        }
+    });
+</script>
+
+</html>

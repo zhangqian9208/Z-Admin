@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<!-- 页面版式03：菜单可以收回，顶部带标签 -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 浏览器title -->
+    <title>Z-Admin|后台管理系统</title>
+    <!-- 自定义图标 -->
+    <link rel="shortcut icon" href="images/cloud_logo_2.png" />
+    <!-- 引入vue开发环境 -->
+    <script src="plugins/vue/vue.js"></script>
+    <!-- 引入组件库,包含自定义请求方法 -->
+    <script src="plugins/element-ui/lib/index.js"></script>
+    <script src="./js/request.js"></script>
+    <script src="plugins/axios/axios.min.js"></script>
+    <script src="api/system/login.js"></script>
+    <!-- 引入element样式 -->
+    <link rel="stylesheet" href="plugins/element-ui/lib/theme-chalk/index.css">
+    <!-- 自定义css样式 -->
+    <link href="styles/css/index.css" rel="stylesheet" type="text/css">
+
+    <!-- css样式,样式和本页相关，没有抽出 -->
+    <style>
+        /* 左侧菜单进度条样式1 */
+        .box {
+            width: auto;
+            height: 100%;
+            /* background: #212431dc;  */
+            white-space: nowrap;
+        }
+
+        /* 左侧菜单进度条样式2 */
+        .el-scrollbar {
+            height: 100%;
+        }
+
+        /* 左侧菜单进度条样式3 */
+        .el-scrollbar__wrap {
+            overflow: scroll;
+            width: 130%;
+            height: calc(100vh + 18px);
+        }
+
+        /* LOGO区域外层 */
+        #logoTemplate {
+            text-align: center;
+        }
+
+        /* 顶部tabs菜单没有被选中的颜色 */
+        .el-tabs__item {
+            /* background-color: rgb(255, 255, 255) !important; */
+        }
+
+        /* 顶部tabs菜单被选中的颜色 */
+        .el-tabs__item.is-active {
+            border-bottom: none;
+            height: 38px;
+            text-align: center;
+            padding-top: 0px;
+            padding-bottom: 25px;
+            font-size: 12px !important;
+            color: white !important;
+            /* background-color: #FFB800 !important; */
+            /* background-color: #42B983 !important; */
+            background-color: #409EFF !important;
+        }
+
+        /* 顶部tabs菜单没有被选中的颜色 */
+        .el-tabs__item {
+            height: 38px;
+            text-align: center;
+            padding-top: 0px;
+            font-size: 12px !important;
+            /* color: white !important; */
+            /* background-color: #FFB800 !important; */
+            /* background-color: #42B983 !important; */
+            /* background-color: #409EFF !important; */
+        }
+
+        /* 右侧菜单被选中的颜色 */
+        .el-menu-item.is-active {
+            /* 文字颜色 */
+            color: #409EFF !important;
+            background-color: #2D303E !important;
+        }
+
+        /* 页面整体容器样式 */
+        .container {
+            height: screenHeight;
+        }
+
+        /* 页面中心iframe页面样式 */
+        #iframeWindow {
+            background-color: #ffffff;
+            text-align: center;
+            margin-top: 0px;
+            padding: 5px;
+            height: calc(100vh - 180px);
+            border-radius: 5px
+        }
+
+        /* 主区域外层iframe外div01 */
+        #iframeDiv01 {
+            padding: 15px;
+            background-color: #f7f7f7e7;
+        }
+
+        /* 主区域等待效果 */
+        #loading {
+            height: calc(100vh - 180px);
+        }
+
+        /* 右上角当前登录用户样式 */
+        #userInfo {
+            margin-bottom: 20px;
+            margin-top: 0px;
+            margin-left: 25px;
+            padding-top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- vue选择器start -->
+    <div id="app">
+        <!-- 页面整体容器start  :style="{'height':screenHeight}" -->
+        <el-container id="container">
+
+            <!-- 左侧导航栏start -->
+            <el-aside width="auto" id="left" scrolling="auto">
+                <div class="box">
+                    <el-scrollbar>
+                        <el-menu class="el-menu-vertical-demo" :collapse="isopen" background-color="#383c4d"
+                            :default-active="active" text-color="#fff" active-text-color="rgb(64, 158,255)">
+                            <!-- 公司logo statr  -->
+                            <el-menu-item>
+                                <template slot="title" id="logoTemplate">
+                                    <!-- 公司LOGO位置在这里修改 -->
+                                    <el-avatar id="logo" slot="title" shape="square" size="medium " width="30px"
+                                        src="images/logo_new.png">
+                                    </el-avatar>
+                                </template>
+                            </el-menu-item>
+                            <!-- 公司logo end -->
+                            <!-- 左侧导航菜单start (使用循环获取动态菜单) -->
+                            <el-submenu :index="val.id" :key="val.id" v-for="(val,index) in menus"
+                                v-if="val.parentId ==null && val.children.length >0">
+                                <!-- 主菜单 -->
+                                <template slot="title" :key="val.id">
+                                    <i :class="val.icon"></i>
+                                    <span slot="title">{{val.name}}</span>
+                                </template>
+                                <!-- 子菜单 -->
+                                <el-menu-item v-for="(v,i) in val.children" @click="menuHandle(v,false)"
+                                    :index="v.curl">
+                                    <i :class="v.icon"></i>
+                                    <span slot="title">{{v.name}}</span>
+                                </el-menu-item>
+                            </el-submenu>
+                            <!-- 左侧导航菜单end -->
+                        </el-menu>
+                    </el-scrollbar>
+                </div>
+            </el-aside>
+            <!-- 左侧导航栏end -->
+
+            <!-- 头部和页面容器start -->
+            <el-container style="height: 100vh;width:auto;">
+
+                <!-- 头部模块 start -->
+                <el-header class="header" id="header">
+                    <!-- 收回菜单按钮图标 -->
+                    <i :class="headericon" @click="headericons()" id="caozuo"> </i>
+                    <!-- 当前打开功能提示 -->
+                    <span id="weizhi">{{headTitle}}</span>
+                    <!-- 用户登录信息start -->
+                    <el-dropdown id="member">
+                        <span class="el-dropdown-link" id="name">
+                            <i class="el-icon-user-solid" id="user"></i>
+                            <!-- 这里动态显示登录用户名 -->
+                            {{ userInfo.name }}<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <!-- 用户登录鼠标划过弹出按钮 -->
+                        <el-dropdown-menu slot="dropdown">
+                            <!-- 修改密码按钮 -->
+                            <el-dropdown-item>
+                                <el-button type="text" @click="dialogVisiblePassword = true">修改密码</el-button>
+                            </el-dropdown-item>
+                            <!-- 退出登录按钮 -->
+                            <el-dropdown-item>
+                                <el-button type="text" @click="logout">退出登录</el-button>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    <!-- 用户登录信息end -->
+                </el-header>
+                <!-- 头部模块 end -->
+
+                <!-- 主区域部分start -->
+                <el-container id="zhuquyu">
+
+                    <!-- 主区域部分Iframe模块start -->
+                    <el-main style="padding:0px;" scrollbar="yes">
+                        <!-- 可关闭标签选项卡start -->
+                        <el-tabs v-model="tabindex" type="card" @tab-remove="removetabs" @tab-click="clicktabs"
+                            :closable="closable" text-align='middle'>
+                            <el-tab-pane v-for="(item, index) in tabvals" :label="item.title" :name="item.name"
+                                width="100%">
+                                <!-- 正文iframe嵌套div start -->
+                                <div id="iframeDiv01" scrollbar="auto" v-loading="loading">
+                                    <!-- 等待页面 -->
+                                    <div class="divTmp" id="loading" v-show="loading"></div>
+                                    <!-- iframe加载表格 -->
+                                    <iframe :src="iframeUrl" id="iframeWindow" frameborder="0" width="100%"
+                                        ref="iframeWindow" v-if="iframeUrl==item.name" onload="setIframeHeight(this) "
+                                        target=_parent v-show="!loading">
+                                    </iframe>
+                                </div>
+                                <!-- 正文iframe嵌套div end -->
+                            </el-tab-pane>
+                        </el-tabs>
+                        <!-- 可关闭标签选项卡end -->
+                    </el-main>
+                    <!-- 主区域部分Iframe模块end -->
+
+                    <!-- 主区域页面底部start -->
+                    <el-footer id="dibu" style="height:35px">
+                        <div>
+                            <span> </span>
+                            <p id="footerText">{{pageInfo}} </p>
+                        </div>
+                    </el-footer>
+                    <!-- 主区域页面底部end -->
+
+                </el-container>
+                <!-- 主区域部分end -->
+
+            </el-container>
+        </el-container>
+            <!-- 页面整体容器end -->
+
+            <!--弹窗部分start-->
+
+            <!--修改密码弹窗start-->
+            <el-dialog title="账户密码修改" :visible.sync="dialogVisiblePassword" width="40%" :before-close="handleClose">
+                <!-- 当前登录用户名提示，不允许修改 -->
+                <span id="userInfo">
+                    <strong>当前登录账户：</strong>{{ userInfo.name }}
+                    <span>（用户名请联系主管理员更改）</span>
+                </span>
+                <!-- 密码提交表单start -->
+                <el-form :model="password" :rules="rules" ref="ruleForm" label-width="80px" style="margin-top: 25px;">
+                    <el-form-item label="旧密码" prop="oldPassword">
+                        <el-input placeholder="请输入旧密码" v-model="password.oldPassword" maxlength="20" show-word-limit>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="新密码">
+                        <el-input placeholder="请输入新密码" v-model="password.newPassword01" show-password maxlength="20"
+                            show-word-limit></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码">
+                        <el-input placeholder="请再次输入新密码" v-model="password.newPassword02" show-password maxlength="20"
+                            show-word-limit></el-input>
+                    </el-form-item>
+                </el-form>
+                <!-- 密码提交表单end -->
+                <!-- 操作按钮 -->
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisiblePassword = false">取 消</el-button>
+                    <el-button type="primary" @click="changePassword">提 交</el-button>
+                </div>
+            </el-dialog>
+            <!--修改密码弹窗end-->
+
+            <!--新增修改公用弹窗start ：弹窗宽度和弹窗高度可以从子页面传输-->
+            <el-dialog :title=dislogName :visible.sync="dialogVisible" :width=big :before-close="handleClose"
+                       :close-on-click-modal="false" :close-on-press-escape="false">
+                <iframe :src="dialogUrl" width=100% :height=height frameborder="0" id="iframeUpdate"></iframe>
+            </el-dialog>
+            <!--新增修改公用弹窗end-->
+
+            <!--弹窗部分end-->
+
+    </div>
+    <!-- vue选择器end -->
+
+    <!-- 引入组件库 -->
+    <script src="plugins/element-ui/lib/index.js"></script>
+    <script src="./js/request.js"></script>
+    <script src="plugins/axios/axios.min.js"></script>
+    <script src="api/system/login.js"></script>
+    <script src="api/index/index.js"></script>
+    <!-- js代码区域 -->
+    <script>
+        // vue代码区域
+        var index = new Vue({
+            el: '#app',
+            //数据集合
+            data() {
+                return {
+                    //标签页是否可以关闭的值
+                    closable: false,
+                    // 顶部菜单指使默认值
+                    headTitle: '首页',
+                    // 默认打开的页面（iframe）
+                    iframeUrl: 'pages/home/home_page.html',
+                    // 默认打开的页面（tabs首页，需要和iframeUrl一致）
+                    tabindex: 'pages/home/home_page.html',
+                    // tabs标签页使用
+                    tabvals: [{ title: '首页', name: 'pages/home/home_page.html', value: '', closable: false }],
+                    //页面底部版权信息，具体内容在这里修改
+                    pageInfo: 'Copyright © 2022 Z-Admin-轻量化后台管理系统',
+                    // 当前菜单默认收起状态
+                    isopen: false,
+                    // 收起菜单图标的默认状态
+                    headericon: 'el-icon-s-fold',
+                    //用户信息
+                    userInfo: {},
+                    // 修改密码弹窗状态
+                    dialogVisiblePassword: false,
+                    // 新增修改公用弹窗状态
+                    dialogVisible: false,
+                    //新增修改公用弹窗地址
+                    dialogUrl: ' ',
+                    //新增修改公用弹窗名称
+                    dislogName: '',
+                    //新增修改公共弹窗大小，big-宽，height-高
+                    big: '',
+                    height: '',
+                    // 修改密码提交的数据
+                    password: {
+                        //用户id
+                        id: window.localStorage.id,
+                        //旧密码
+                        oldPassword: '',
+                        // 新密码1
+                        newPassword01: '',
+                        // 新密码2
+                        newPassword02: '',
+                    },
+                    // 标签页使用
+                    active: '',
+                    // 菜单动态数据，可以后台传入进行菜单权限控制
+                    menus: [{ id: 1, name: '菜单正在加载中' }],
+                    // 获取屏幕高度
+                    screenHeight: document.documentElement.clientHeight + "px",
+                    // 获取iframe页面高度
+                    iframeHeight: document.documentElement.clientHeight - 41 - 60 + "px",
+                    //等待加载效果页面默认状态
+                    loading: true,
+                    //动态按钮权限集合
+                    buttomList: '',
+                }
+            },
+            methods: {
+                //打开新增修改公共弹窗的方法（在子页面中调用）
+                dialog(url, name, big, height) {
+                    //定义iframe标签位置
+                    this.dialogUrl = url
+                    //定义弹窗名字
+                    this.dislogName = name
+                    //定义弹窗宽度
+                    this.big = big
+                    //定义弹窗高度
+                    this.height = height
+                    //打开弹窗
+                    this.dialogVisible = true
+                },
+                //刷新修改弹窗内部iframe的方法(避免缓存数据导致修改回显失败)
+                updateReload() {
+                    document.getElementById('iframeUpdate').contentWindow.location.reload(true)
+                },
+                //登录气泡及弹窗关闭使用的方法
+                handleClose(done) {
+                    {
+                        done();
+                    }
+                },
+                // 收回菜单的图标改变方法
+                headericons() {
+                    this.isopen == false ? this.isopen = true : this.isopen = false;
+                    this.headericon == 'el-icon-s-fold' ? this.headericon = 'el-icon-s-unfold'
+                        : this.headericon = 'el-icon-s-fold'
+                },
+                //用户退出的方法
+                logout() {
+                    logoutApi().then((res) => {
+                        if (res.code === 1) {
+                            localStorage.removeItem('userInfo')
+                            window.location.href = '/backend/pages/login/login.html'
+                        }
+                    })
+                },
+                //菜单返回：此方法出问题，暂时不使用该方法，而是在跳转页面调用方法
+                goBack(name) {
+                    // window.location.href = 'javascript:history.back()'
+                    const menuList = this.menus.find(item => item.id === this.menuActived)
+                    // this.goBackFlag = false
+                    this.headTitle = name
+                    this.menuHandle(menu, false)
+                },
+                //点击左侧菜单调用的方法
+                menuHandle(item, goBackFlag) {
+                    //新建选项卡
+                    this.addtTabs(item)
+                    //更改页面顶部位置提示信息
+                    this.headTitle = item.name
+                    //打开等待页面
+                    this.loading = true
+                    //关闭等待页面
+                    this.closeLoading()
+                },
+                //新增顶部选项卡的方法
+                addtTabs(item) {
+                    this.active = item.curl;
+                    //从当前打开的标签页中查询是否有目前点击的菜单的标签页
+                    let isok = this.tabvals.filter(tab => tab.name == item.curl);
+                    if (isok.length < 1) {
+                        this.tabvals.push({ title: item.name, name: item.curl, buttom: item.children })
+                        this.tabindex = item.curl;
+                        this.iframeUrl = item.curl;
+                        // 为权限集合赋值
+                        this.buttomList = item.children;
+                    } else {
+                        this.tabindex = isok[0].name;
+                        //为链接赋值
+                        this.iframeUrl = isok[0].name;
+                        // 为权限集合赋值
+                        this.buttomList = isok[0].buttom;
+                    }
+                    //为关闭按钮赋值
+                    this.closable = true;
+                },
+                //点击顶部标签页被点击的方法
+                clicktabs(tab) {
+                    //关闭等待页面
+                    this.closeLoading()
+                    //更改ifarme的链接地址
+                    this.iframeUrl = tab.name
+                    //更改顶部提示文字
+                    this.headTitle = tab.label
+                    // 为权限赋值:因为上面tabvals的属性buttom无法赋值给tab，这里再次从集合中取值
+                    let isok = this.tabvals.filter(tabNew => tabNew.name == tab.name);
+                    this.buttomList = isok[0].buttom;
+                    //为关闭按钮赋值
+                    if (tab.name != 'pages/home/home_page.html') {
+                        this.closable = true
+                    } else {
+                        this.closable = false
+                    }
+                },
+                //关闭标签页的方法
+                removetabs(tabname) {
+                    if (tabname != 'pages/home/home_page.html') {
+                        let index = this.tabvals.findIndex(tab => tab.name == tabname);
+                        this.tabvals.splice(index, 1)
+                        //刷新标签页
+                        this.tabindex = this.tabvals[index - 1].name
+                        this.iframeUrl = this.tabvals[index - 1].name
+                        // 为权限赋值
+                        this.buttomList = this.tabvals[index - 1].buttom;
+                        //为关闭按钮赋值
+                        if (this.tabvals[index - 1].name != 'pages/home/home_page.html') {
+                            this.closable = true
+                        } else {
+                            this.closable = false
+                        }
+                    }
+                },
+                // 等待加载页面关闭，可以设置显示时间，单位：毫秒
+                closeLoading() {
+                    this.timer = null
+                    this.timer = setTimeout(() => {
+                        this.loading = false
+                    }, 300)
+                },
+                //修改密码的方法
+                changePassword() {
+                    let _this = this;
+                    //修改密码前，先验证当前用户是否登录（后台使用了登录过滤器，前端可以不用验证）
+                    //this.checkLogin();
+                    //获取当前电脑存储的数据
+                    if (!window.localStorage) {
+                        alert("浏览器不支持localStorage,请升级浏览器")
+                    } else {
+                        //第0层判断，三个输入框都不能为空
+                        //对输入框进行非空判断
+                        if (this.password.oldPassword === "" || this.password.oldPassword === undefined || this.password.oldPassword === null ||
+                            this.password.newPassword01 === "" || this.password.newPassword01 === undefined || this.password.newPassword01 === null ||
+                            this.password.newPassword02 === "" || this.password.newPassword02 === undefined || this.password.newPassword02 === null) {
+                            this.tips('新密码与旧密码均不能为空！');
+                        } else {
+                            //都不为空，进行数据提交
+                            //第一层判断，新密码与老密码不能一致
+                            if (this.password.oldPassword === this.password.newPassword01) {
+                                _this.tips('新密码不能与旧密码相同！');
+                            } else {
+                                //第二层判断，如果两次输入的密码不一致，则给出提示
+                                if (this.password.newPassword01 === this.password.newPassword02) {
+                                    //获取localStorage对象
+                                    //let storage = window.localStorage;
+                                    //alert("id："+storage.id);
+                                    //发送请求，根据当前id去服务器中查找对应的数据
+                                    changePassword(this.password).then(res => {
+                                        if (String(res.code) === '1') {
+                                            //给出提示
+                                            parent.index.$message.success(res.data)
+                                            //强制退出，重新登录(为了提示，进行延时操作)
+                                            this.timer = null
+                                            this.timer = setTimeout(() => {
+                                                this.logout()
+                                            }, 1000)
+                                        } else {
+                                            this.$message.error(res.msg)
+                                        }
+                                    }).catch(err => {
+                                        this.$message.error("请求异常！")
+                                    })
+
+                                } else {
+                                    //如果两次输入的密码不一致，给出提示
+                                    this.tips('两次新密码输入不一致！');
+                                }
+                            }
+                        }
+                    }
+                },
+                //错误提示信息，根据传入信息进行显示
+                tips(msg) {
+                    this.$message({
+                        message: msg,
+                        type: 'warning'
+                    });
+                },
+                //原密码输入错误的提示
+                passwordTips02() {
+                    this.$message.error('旧密码输入错误，如忘记旧密码，请联系方未教育工作人员！');
+                },
+                //刷新iframe页面的方法(新增页面关闭弹窗时调用)
+                reloadIframe() {
+                    // 强行刷新页面Iframe的方法，数据回到第一页，新增后使用的方法
+                    // document.getElementById('iframeWindow').contentWindow.location.reload(true)
+                    document.getElementById('iframeWindow').contentWindow.reload();
+                },
+                //刷新iframe页面的方法(修改页面关闭弹窗时调用)
+                handleQuery() {
+                    // 重新请求页面的方法
+                    document.getElementById('iframeWindow').contentWindow.init();
+                },
+                //获取当前用户权限菜单
+                author() {
+                    //加载当前用户数据
+                    queryAuthor().then(res => {
+                        console.log(res)
+                        if (String(res.code) === '1') {
+                            this.menus = res.data
+                        } else {
+                            this.$message.error(res.msg || '操作失败')
+                        }
+                    })
+                }
+            },
+            // 钩子函数：监视this变量的变化
+            computed: {
+
+            },
+            // 钩子函数：页面加载时执行
+            created() {
+                this.author()
+                //获取当前登录的用户信息
+                const userInfo = window.localStorage.getItem('userInfo')
+                if (userInfo) {
+                    this.userInfo = JSON.parse(userInfo)
+                    //获取当前用户权限下的菜单
+                }
+                // 关闭等加载页面
+                this.closeLoading()
+                //延时加载css页面效果
+                this.timer = setTimeout(() => {
+                    document.getElementById('iframeWindow').contentWindow.location.reload(true)
+                }, 300)
+            },
+            //钩子函数：页面销毁前执行
+            beforeDestroy() {
+                this.timer = null
+                clearTimeout(this.timer)
+            },
+            //钩子函数：页面挂载前执行
+            mounted() {
+                window.menuHandle = this.menuHandle
+            },
+
+        })
+    </script>
+</body>
+
+</html>

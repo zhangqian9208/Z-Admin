@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>后台管理系统|登录</title>
+    <!-- 引入依赖 -->
+    <link href="../../styles/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../styles/css/login.css" rel="stylesheet">
+    <!-- 引入Element必要的依赖文件 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/lib/theme-chalk/index.css">
+    <script src="../../plugins/vue/vue.js"></script>
+    <script src="../../plugins/element-ui/lib/index.js"></script>
+    <!-- 引入插件 -->
+    <script src="../../api/system/login.js"></script>
+    <script src="../../plugins/axios/axios.min.js"></script>
+    <script src="../../js/request.js"></script>
+    <!-- 引入资源end -->
+    <!-- 自定义图标 -->
+    <link rel="shortcut icon" href="/images/cloud_logo_2.png" />
+</head>
+
+<body class="login-body">
+    <!-- 顶部LOGO部分start -->
+    <div class="login-banner">
+        <a href="" target="_blank">
+            <div class="logo"></div>
+        </a>
+        <h1> 后 台 管 理 系 统</h1>
+    </div>
+    <div id="app" class="container-fluid vertical-layout">
+
+        <!-- 顶部LOGO部分end -->
+        <!-- 登录中间部分 -->
+        <div class="login-box">
+            <h1>登 录</h1>
+            <h2>请先登录以管理后台数据</h2>
+            <el-form :model="member" :rules="loginRules" ref="ruleForm" label-width="100px" id="ruleForm">
+                <!-- 用户名 -->
+                <el-input v-model="member.userName" placeholder="请输入用户名" prefix-icon="el-icon-user-solid" maxlength="20"
+                    id="userName" style="width: 380px;height: 45px;margin-top: 16px;">
+                </el-input>
+
+                <!-- 密码 -->
+                <el-input v-model="member.password" placeholder="请输入密码" prefix-icon="el-icon-s-goods" show-password
+                    id="password" style="width: 380px;height: 45px;margin-top: 16px;">
+                </el-input>
+
+                <!-- 文字提示部分 -->
+                <h3>没有账户？请联系管理员获取。</h3>
+                <!-- 登录按钮 -->
+                <div id="denglu_wai">
+                    <el-button :loading="loading" type="primary" id="denglu_nei" @click="onSubmit">
+                        <span v-if="!loading">登 录</span>
+                        <span v-else>登录中……</span>
+                    </el-button>
+                </div>
+            </el-form>
+
+            <!--新增修改公用弹窗start ：弹窗宽度和弹窗高度可以从子页面传输-->
+            <el-dialog :title=dislogName :visible.sync="dialogVisible" width="460px" :before-close="handleClose"
+                       :close-on-click-modal="false" :close-on-press-escape="false">
+                <iframe :src="dialogUrl" width=100% :height=height frameborder="0" id="iframeUpdate"></iframe>
+            </el-dialog>
+
+        </div>
+    </div>
+
+
+    <script>
+        /* 脚本中创建对象,处理业务 */
+        var login = new Vue({
+            el: '#app',
+            // 数据集合
+            data() {
+                return {
+                    // 新增修改公用弹窗状态
+                    dialogVisible: false,
+                    //新增修改公用弹窗地址
+                    dialogUrl: ' ',
+                    //新增修改公用弹窗名称
+                    dislogName: '',
+                    //新增修改公共弹窗大小，big-宽，height-高
+                    big: '',
+                    height: '',
+                    member: {
+                        userName: '',
+                        password: '',
+                        captchaVerification: ""
+                    },
+                    // 登录按钮状态改变
+                    loading: false
+                }
+            },
+            // 方法集合
+            methods: {
+                //打开新增修改公共弹窗的方法（在子页面中调用）
+                dialog(url, name, big, height) {
+                    //定义iframe标签位置
+                    this.dialogUrl = url
+                    //定义弹窗名字
+                    this.dislogName = "请拖动验证码到正确的位置"
+                    //定义弹窗宽度
+                    this.big = 440
+                    //定义弹窗高度
+                    this.height = 280
+                    //打开弹窗
+                    this.dialogVisible = true
+                },
+                //登录的方法
+                onSubmit() {
+                    if (!window.localStorage) {
+                        alert("更升级到高版本的浏览器，否则无法正常使用！")
+                    } else {
+                        //对输入框进行非空判断
+                        if (this.member.userName === "" || this.member.userName === undefined || this.member.userName === null ||
+                            this.member.password === "" || this.member.password === undefined || this.member.password === null) {
+                            // 弹出气泡进行提示
+                            this.nullTips();
+                        } else {
+                            //如果输入不为空，则跳转验证码页面
+                            this.dialog('/backend/pages/login/captcha.html',)
+                        }
+                    }
+                },
+                //输入的数据为空的提示
+                nullTips() {
+                    this.$message({
+                        message: '请输入用户名和密码！',
+                        type: 'warning'
+                    });
+                },
+                // 登录的方法
+                async handleLogin() {
+                    // 更改按钮中的文字
+                    this.loading = true
+                    let res = await loginApi(this.member)
+                    if (String(res.code) === '1') {
+                        localStorage.setItem('userInfo', JSON.stringify(res.data))
+                        window.location.href = '/backend/index.html'
+                    } else {
+                        this.$message.error(res.msg)
+                        this.loading = false
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

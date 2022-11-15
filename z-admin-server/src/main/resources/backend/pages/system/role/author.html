@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入Element必要的依赖文件 -->
+    <link rel="stylesheet" href="../../../plugins/element-ui/lib/theme-chalk/index.css">
+    <script src="../../../plugins/vue/vue.js"></script>
+    <script src="../../../plugins/element-ui/lib/index.js"></script>
+    <script src="../../../plugins/axios/axios.min.js" type="text/javascript"></script>
+    <script src="../../../js/request.js"></script>
+    <script src="../../../api/system/role.js"></script>
+    <script src="../../../js/validate.js"></script>
+    <script src="../../../js/index.js"></script>
+    <!-- 导入树形控件 -->
+    <script src="../../../plugins/ztree/js/jquery.ztree.all.min.js"></script>
+    <script src="../../../plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+    <script src="../../../plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+
+<body>
+    <!-- div关联Vue依赖 -->
+    <div id="div">
+        <!-- 返回按钮 -->
+        <el-button type="primary" icon="el-icon-back" size="medium" @click="goBack()">返回列表页面
+        </el-button>
+        <!-- 换行使用 -->
+        <div></div>
+        <!-- 当前选中角色提示 -->
+        <el-tag type="success" style="margin-top: 15px;margin-bottom: 15px;">当前选中角色：{{role.name}}</el-tag>
+
+        <!--复选框，显示当前关联的模块-->
+        <el-tree :data="data" :props="props" :default-expanded-keys="defaultExpandArr" show-checkbox ref="tree"
+            check-strictly node-key="id" @check-change="handleCheckChange">
+        </el-tree>
+
+        <!-- 按钮部分 -->
+        <div style="margin-top: 15px;margin-bottom: 15px;"></div>
+        <el-button type="primary" @click="submitForm(checkedArray,role.roleId)" >保存</el-button>
+        <el-button type="warning" plain @click="resetChecked">重置</el-button>
+
+        <!-- 新增数据表单end -->
+    </div>
+</body>
+<!-- js代码部分 -->
+<script>
+    // Vue核心对象
+    new Vue({
+        el: "#div",
+        data() {
+            return {
+                //树需要的数据
+                data: [],
+                //标记当前id
+                id: '',
+                //当前角色的数据
+                role: {},
+                // 多选框数据
+                props: {
+                    label: 'name',
+                    children: 'children',
+                },
+                //用于回显使用，被选中的数据数组
+                checked: [],
+                // 选中的节点组成的数组
+                checkedArray: ['8'],
+            };
+        },
+        //钩子函数，创建页面时被初始化
+        created() {
+            //校验按钮的方法
+            // this.buttomList()
+            //从请求路径中获取id数据
+            this.id = requestUrlParam('id')
+            //获取页面树列表与选中数据回显
+            this.getTree()
+            //获取角色数据
+            this.init()
+        },
+        //钩子函数
+        mounted() {
+
+        },
+        methods: {
+            //校验按钮的方法
+            buttomList() {
+                //获取父页面按钮集合
+                let buttoms = parent.index.buttomList;
+                console.log(this.buttoms)
+                //循环集合，为按钮状态命中
+                for (let j = 0, len = buttoms.length; j < len; j++) {
+                    //为新增按钮改变状态:这里使用icon作为按钮权限标识
+                    if (buttoms[j].icon === "add") {
+                        alert(buttoms[j].icon)
+                        this.add = true;
+                        // 为修改按钮改变状态
+                    }
+                }
+            },
+            //重置（清空）树选项的方法
+            resetChecked() {
+                this.$refs.tree.setCheckedKeys([]);
+            },
+            // 选中并获取数据的方法
+            handleCheckChange(data, check, indeterminate) {
+                // 父节点操作
+                if (data.parentId !== null) {
+                    if (check === true) {
+                        // 如果选中，设置父节点为选中
+                        this.$refs.tree.setChecked(data.parentId, true);
+                    } else {
+                        // 如果取消选中，检查父节点是否该取消选中（可能仍有子节点为选中状态）
+                        var parentNode = this.$refs.tree.getNode(data.parentId);
+                        var parentHasCheckedChild = false;
+                        for (
+                            var i = 0, parentChildLen = parentNode.childNodes.length;
+                            i < parentChildLen;
+                            i++
+                        ) {
+                            if (parentNode.childNodes[i].checked === true) {
+                                parentHasCheckedChild = true;
+                                break;
+                            }
+                        }
+                        if (!parentHasCheckedChild)
+                            this.$refs.tree.setChecked(data.parentId, false);
+                    }
+                }
+                // 子节点操作，如果取消选中，取消子节点选中
+                if (data.children != null && check === false) {
+                    for (var j = 0, len = data.children.length; j < len; j++) {
+                        var childNode = this.$refs.tree.getNode(data.children[j].id);
+                        if (childNode.checked === true) {
+                            this.$refs.tree.setChecked(childNode.data.id, false);
+                        }
+                    }
+                }
+
+                // checkedArray 为拿到的选中的数组
+                this.checkedArray = this.$refs.tree.getCheckedKeys();
+            },
+            //获取选中项的方法
+            getCheckedKeys() {
+                console.log(this.$refs.tree.getCheckedKeys());
+            },
+            // 展开数据的方法
+            handleNodeClick(data) {
+                console.log(data);
+            },
+            //加载树菜单以及回显的方法
+            getTree() {
+                let param = {}
+                queryRoleAndModuleById(this.id).then(res => {
+                    console.log(res)
+                    if (String(res.code) === '1') {
+                        //加载树数据（用于显示树）
+                        this.data = res.data.tree
+                        //加载选中的树数据（用于回显选中的树数据）
+                        this.checked = res.data.checks
+                        //设置选中数据（用于回显选中的树数据）
+                        this.$refs.tree.setCheckedKeys(this.checked);
+                        // 让加载的选中数据和选中数据同步
+                        this.checkedArray = this.checked
+                    } else {
+                        //如果请求失败，则清空数据，进行失败提示
+                        this.data = []
+                        this.$refs.tree.setCheckedKeys([]);
+                        this.$message.error(res.msg || '操作失败')
+                    }
+                }
+                )
+            },
+            //返回上级页面方法，需要定义上级页面地址
+            goBack() {
+                window.parent.menuHandle({
+                    id: '4',
+                    curl: 'pages/system/role/list.html',
+                    name: '角色管理'
+                }, false)
+            },
+            //初始化方法：根据id查询单条角色数据
+            async init() {
+                queryRoleById(this.id).then(res => {
+                    console.log(res)
+                    if (String(res.code) === '1') {
+                        this.role = { ...res.data }
+                    } else {
+                        this.$message.error(res.msg || '操作失败')
+                    }
+                })
+            },
+            //重置数据的方法
+            resetForm(ruleForm) {
+                this.ruleForm = {
+                    name: '',
+                    param: '',
+                }
+            },
+            // 提交数据的方法
+            submitForm(checkedArray, st) {
+                // 提交数据
+                updateRoleModule(checkedArray, st).then(res => {
+                    if (res.code === 1) {
+
+                        parent.index.$message.success('修改成功！')
+                        //返回列表页面
+                        //this.goBack();
+                    } else {
+                        parent.index.$message.error(res.msg || '操作失败')
+                    }
+                }).catch(err => {
+                    parent.index.$message.error('请求出错了：' + err)
+                })
+            },
+        }
+    });
+</script>
+
+</html>

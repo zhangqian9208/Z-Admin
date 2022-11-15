@@ -1,0 +1,156 @@
+# Z-Admin项目配置文件
+# @Author:张骞
+# @Date:2022-11-07
+
+# 服务配置
+server:
+  # 配置对外暴露的端口
+  port: 18078
+  # tomcat并发配置
+  tomcat:
+    # 等待队列长度，默认100
+    accept-count: 100
+    # 服务器最大连接数，默认8192
+    max-connections: 100
+    threads:
+      # 最大工作线程数，默认200。（4核8g内存，线程数经验值800。）
+      max: 200
+      # 最小工作空闲线程数，默认10。（适当增大一些，以便应对突然增长的访问量）
+      min-spare: 20
+
+spring:
+  # 项目名称
+  application:
+    name: z-admin
+  servlet:
+    # 配置最大上传的文件大小
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    # 生产环境数据库地址
+    # url: jdbc:mysql://127.0.0.1:3306/findaway_cloud?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    # 开发环境数据库地址
+    url: jdbc:mysql://127.0.0.1:3306/z_admin_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    username: z_admin_test
+    password: 123456
+  # redis配置
+  redis:
+    # 单节点-主机地址
+    # host: 127.0.0.1  # 生产环境
+    database: 0 # redis数据库索引
+    port: 6379 # 单节点-端口
+    # password: Zq,.920828  # 单节点-密码
+    # 超时时间设置
+    timeout: 10s
+    jedis:
+      # redis连接池设置
+      pool:
+        max-wait: 5000ms
+        max-Idle: 100
+        min-Idle: 10
+      # redis集群设置
+      # cluster:
+      # nodes: 192.168.31.81:6379,192.168.31.81:6380,192.168.31.81:6381
+      # max-redirects: 5
+  # spring-cache缓存配置
+  cache:
+    redis:
+      time-to-live: 600000  # 设置spring cache（redis）缓存过期时间,单位：毫秒（spring cache缓存系统）
+
+# 日志配置
+logging:
+  # 自定义日志配置文件
+  config: classpath:logback-spring.xml
+  # mybatisplus配置在控制台输出sql语句和结果
+  level:
+    com.template.back.common.mapper.system: debug
+
+# mybatis-plus配置
+mybatis-plus:
+  global-config:
+    db-config:
+      # 配置表名前缀
+      table-prefix: tb_
+      # id策略为自增长
+      id-type: auto
+      # 逻辑已删除值 1
+      logic-delete-value: 1
+      # 逻辑未删除值 0
+      logic-not-delete-value: 0
+  # 配置mapper扫描的位置
+  mapper-locations: classpath*:com/z_admin/back/mapper/*/*.xml
+  # 配置枚举包扫描位置
+  type-enums-package: com.z_admin.back.common.enums
+
+#定时任务配置
+scheduled-thread-pool: 1
+
+#权限过滤器开关
+author-interceptor-state: false
+
+#knife4j文档过滤器开关，生产环境下需要关闭
+doc-interceptor-state: false
+
+# 自定义配置写在这里
+myself:
+
+
+# AJ-Captcha 行为验证码配置
+aj:
+  captcha:
+    jigsaw: classpath:backend/captcha/jigsaw
+    #滑动验证，底图路径，不配置将使用默认图片
+    ##支持全路径
+    # 支持项目路径,以classpath:开头,取resource目录下路径,例：classpath:images/pic-click
+    pic-click: classpath:backend/captcha/pic-click
+    # 对于分布式部署的应用，我们建议应用自己实现CaptchaCacheService，比如用Redis或者memcache，
+    # 参考CaptchaCacheServiceRedisImpl.java
+    # 如果应用是单点的，也没有使用redis，那默认使用内存。
+    # 内存缓存只适合单节点部署的应用，否则验证码生产与验证在节点之间信息不同步，导致失败。
+    # ！！！ 注意啦，如果应用有使用spring-boot-starter-data-redis，
+    # 请打开CaptchaCacheServiceRedisImpl.java注释。
+    # redis ----->  SPI： 在resources目录新建META-INF.services文件夹(两层)，参考当前服务resources。
+    # 缓存local/redis...
+    cache-type: redis
+    # local缓存的阈值,达到这个值，清除缓存
+    cache-number: 1000
+    # local定时清除过期缓存(单位秒),设置为0代表不执行
+    timing-clear: 180
+    # 验证码类型default两种都实例化。
+    type: default
+    # 汉字统一使用Unicode,保证程序通过@value读取到是中文，可通过这个在线转换;yml格式不需要转换
+    # https://tool.chinaz.com/tools/unicode.aspx 中文转Unicode
+    # 右下角水印文字(我的水印)
+    water-mark:
+    # 右下角水印字体(不配置时，默认使用文泉驿正黑)
+    # 由于宋体等涉及到版权，我们jar中内置了开源字体【文泉驿正黑】
+    # 方式一：直接配置OS层的现有的字体名称，比如：宋体
+    # 方式二：自定义特定字体，请将字体放到工程resources下fonts文件夹，支持ttf\ttc\otf字体
+    # aj.captcha.water-font=WenQuanZhengHei.ttf
+    # water-font: SourceHanSansCN-Normal.otf
+    # 点选文字验证码的文字字体(文泉驿正黑)
+    # aj.captcha.font-type=WenQuanZhengHei.ttf
+    # font-type: SourceHanSansCN-Normal.otf
+    # 校验滑动拼图允许误差偏移量(默认5像素)
+    slip-offset: 5
+    # aes加密坐标开启或者禁用(true|false)
+    aes-status: true
+    # 滑动干扰项(0/1/2)
+    interference-options: 0
+    history-data-clear-enable: true
+    # 接口请求次数一分钟限制是否开启 true|false
+    req-frequency-limit-enable: true
+    # 验证失败5次，get接口锁定
+    req-get-lock-limit: 5
+    # 验证失败后，锁定时间间隔,s
+    req-get-lock-seconds: 60
+    # get接口一分钟内请求数限制
+    req-get-minute-limit: 30
+    # check接口一分钟内请求数限制
+    req-check-minute-limit: 60
+    # verify接口一分钟内请求数限制
+    req-verify-minute-limit: 60
+
