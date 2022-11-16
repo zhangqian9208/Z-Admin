@@ -19,6 +19,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -132,6 +133,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return new ApiInfoBuilder()
                 .title("Z-Admin")
                 .version("2.1")
+                .contact(new Contact("张骞",null,"1454803192@qq.com"))
                 .description("Z-Admin后台管理接口文档")
                 .build();
     }

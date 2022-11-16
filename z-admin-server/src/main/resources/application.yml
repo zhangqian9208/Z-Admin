@@ -31,18 +31,18 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     # 生产环境数据库地址
-    # url: jdbc:mysql://127.0.0.1:3306/findaway_cloud?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/z_admin_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     # 开发环境数据库地址
-    url: jdbc:mysql://192.168.80.105:3306/z_admin_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    # url: jdbc:mysql://192.168.80.105:3306/z_admin_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: z_admin_test
-    password: 123456
+    password: JmxGZM2PeZtxTeia
   # redis配置
   redis:
     # 单节点-主机地址
-    # host: 127.0.0.1  # 生产环境
+    host: 127.0.0.1  # 生产环境
     database: 0 # redis数据库索引
     port: 6379 # 单节点-端口
-    password: Zq,.920828  # 单节点-密码
+    # password: Zq,.920828  # 单节点-密码
     # 超时时间设置
     timeout: 10s
     jedis:
