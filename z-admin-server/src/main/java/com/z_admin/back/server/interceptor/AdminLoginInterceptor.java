@@ -96,9 +96,9 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 
         //2-3-3如果不需要，则直接放行
         if (docCheck) {
-            log.info("拦截到knife4j请求{}", url);
             //判断配置文件的状态，如果为true，则放行，否则不放行
             if(docState){
+                log.info("放行knife4j请求{}", url);
                 return true;
             }else {
                 //如果配置文件为false，则始终返回false

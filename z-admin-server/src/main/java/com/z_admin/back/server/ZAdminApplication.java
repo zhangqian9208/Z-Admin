@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author 张骞
@@ -17,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 
 @Slf4j  //记录日志
+@EnableSwagger2
 @EnableScheduling  //开启定时任务
 @ServletComponentScan  //过滤器扫描注解
 @EnableCaching  //启用Spring Cache框架注解

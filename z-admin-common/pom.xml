@@ -24,6 +24,12 @@
 
     <!--导入相关依赖-->
     <dependencies>
+        <!--集成swagger的knife4j框架-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
+        </dependency>
         <!-- hutool插件 -->
         <dependency>
             <groupId>cn.hutool</groupId>

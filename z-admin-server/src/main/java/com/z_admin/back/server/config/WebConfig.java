@@ -1,5 +1,6 @@
 package com.z_admin.back.server.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.z_admin.back.server.interceptor.AdminLoginInterceptor;
 import com.z_admin.back.server.interceptor.AuthorInterceptor;
 import com.z_admin.back.common.mapper.JacksonObjectMapper;
@@ -20,6 +21,7 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
@@ -30,6 +32,10 @@ import java.util.List;
  */
 @Configuration
 @Slf4j
+//使用swagger配置
+@EnableSwagger2
+//使用Knife4j配置
+@EnableKnife4j
 public class WebConfig extends WebMvcConfigurationSupport {
 
     //注入登录拦截器
@@ -113,7 +119,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.template.back.server.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.z_admin.back.server.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

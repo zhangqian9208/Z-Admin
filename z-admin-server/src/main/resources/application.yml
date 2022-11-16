@@ -35,11 +35,11 @@ spring:
     # 开发环境数据库地址
     url: jdbc:mysql://192.168.80.105:3306/z_admin_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: z_admin_test
-    password: 123
+    password: 123456
   # redis配置
   redis:
     # 单节点-主机地址
-    host: 127.0.0.1  # 生产环境
+    # host: 127.0.0.1  # 生产环境
     database: 0 # redis数据库索引
     port: 6379 # 单节点-端口
     password: Zq,.920828  # 单节点-密码
@@ -59,6 +59,12 @@ spring:
   cache:
     redis:
       time-to-live: 600000  # 设置spring cache（redis）缓存过期时间,单位：毫秒（spring cache缓存系统）
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  # 开启允许bean覆盖
+  main:
+    allow-bean-definition-overriding: true
 
 # 日志配置
 logging:
@@ -92,7 +98,7 @@ scheduled-thread-pool: 1
 author-interceptor-state: false
 
 #knife4j文档过滤器开关，生产环境下需要关闭
-doc-interceptor-state: false
+doc-interceptor-state: true
 
 # 自定义配置写在这里
 myself:

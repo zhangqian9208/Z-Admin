@@ -63,7 +63,7 @@ public class AdminController {
      */
     @ApiOperation(value = "后台用户登录接口")  //knife4j注解，用于对接口方法进行说明
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "map",value = "用户信息 userName-用户名 password-密码",required = true)
+            @ApiImplicitParam(name = "adminDto",value = "用户信息DTO",required = true)
     })  //knife4j注解，用于对接口参数进行说明
     @NoAuthorization  //不需要验证登录
     @PostMapping("/login")
